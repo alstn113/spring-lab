@@ -1,5 +1,6 @@
-package com.project.lock.application;
+package com.project.lock;
 
+import com.project.lock.application.PointService;
 import com.project.lock.domain.Point;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
