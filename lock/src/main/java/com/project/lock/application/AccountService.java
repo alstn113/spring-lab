@@ -2,8 +2,6 @@ package com.project.lock.application;
 
 import com.project.lock.domain.Account;
 import com.project.lock.domain.AccountRepository;
-import jakarta.persistence.LockModeType;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
