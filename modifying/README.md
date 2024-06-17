@@ -1,7 +1,7 @@
 # JPA @Modifying에 대해서 알아보자
 
 @Modifying은 @Query 어노테이션을 사용하여 INSERT, UPDATE, DELETE 쿼리를 실행할 때 사용한다.   
-clearAutomatically와 flushAutomatically 속성이 있으며, 주로 벌크 연산을 수행할 때 사용한다.   
+clearAutomatically와 flushAutomatically 속성이 있으며, 주로 벌크 연산을 수행할 때 사용한다.
 
 @Query 어노테이션을 사용하여 JPQL을 실행할 때, @Modifying을 사용하지 않으면 예외가 발생한다.
 
