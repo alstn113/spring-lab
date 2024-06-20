@@ -62,4 +62,13 @@ public class Post {
     public String getImageUrl() {
         return imageUrl;
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
+    }
 }
