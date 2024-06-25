@@ -1,2 +1,7 @@
-package com.project.auth.ui;public class AuthController {
+package com.project.auth.ui;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class AuthController {
 }
