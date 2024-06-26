@@ -1,4 +1,4 @@
-package com.project.requestscope;
+package com.project.requestscope.basic;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -9,9 +9,9 @@ import org.springframework.web.context.annotation.RequestScope;
 
 @Component
 @RequestScope
-public class MyLogger {
+public class BasicLogger {
 
-    private final Logger log = LoggerFactory.getLogger(MyLogger.class);
+    private final Logger log = LoggerFactory.getLogger(BasicLogger.class);
 
     private String uuid;
     private String requestURL;

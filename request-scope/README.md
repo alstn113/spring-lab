@@ -27,11 +27,11 @@ getObject를 호출하는 시점에는 HTTP 요청이 왔다는 것이 확실하
 컨트롤러와 서비스에서 각각 한번씩 따로 호출해도 같은 HTTP 요청이기 때문에 같은 request scope 빈이 사용된다.
 
 ```java
-private final ObjectProvider<MyLogger> myLoggerProvider;
+private final ObjectProvider<BasicLogger> basicLoggerProvider;
 
 public void logic(String id) {
-    MyLogger myLogger = myLoggerProvider.getObject();
-    myLogger.log("service id = " + id);
+    BasicLogger basicLogger = basicLoggerProvider.getObject();
+    basicLogger.log("service id = " + id);
 }
 ```
 
