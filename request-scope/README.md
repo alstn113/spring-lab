@@ -1,5 +1,11 @@
 # Request Scope에 대해서 알아보자
 
+## 참고자료 
+
+- 김영한 핵심 원리 기본 9장 빈 스코프
+- [request scope 정리 블로그](https://velog.io/@rolroralra/Bean-Scope-Proxy#request-scope)
+- [우테코 미션 리뷰](https://github.com/woowacourse/spring-roomescape-member/pull/88#discussion_r1597484091)
+
 ## 대충 개념
 
 빈 스코프에는 싱글톤, 프로토타입, 웹 스코프(request, session, socket, application) 등이 있다.   
