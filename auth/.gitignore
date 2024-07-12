@@ -1,4 +1,4 @@
-src/main/resources/.env
+.env
 
 HELP.md
 .gradle
