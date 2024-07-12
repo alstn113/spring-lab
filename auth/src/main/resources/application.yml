@@ -10,10 +10,10 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
-        dialect: org.hibernate.dialect.MySQLDialect
     defer-datasource-initialization: true
+    open-in-view: false
   datasource:
-    url: jdbc:h2:mem:test;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    url: jdbc:h2:mem:test;
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -24,4 +24,10 @@ logging:
     org.springframework.orm.transaction: DEBUG
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+
+auth:
+  github:
+    client-id: testestestestest
+    client-secret: testestestestest
+    redirect-uri: testestestestest
 
