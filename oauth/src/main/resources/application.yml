@@ -17,6 +17,7 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  # 이 프로젝트만 따로 열어서 실행하세요
   config:
     import: optional:file:.env[.properties]
 
