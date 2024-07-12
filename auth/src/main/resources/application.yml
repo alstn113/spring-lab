@@ -17,6 +17,8 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  config:
+    import: optional:file:.env[.properties]
 
 logging:
   level:
@@ -27,7 +29,6 @@ logging:
 
 auth:
   github:
-    client-id: testestestestest
-    client-secret: testestestestest
-    redirect-uri: testestestestest
+    client-id: ${GITHUB_CLIENT_ID}
+    client-secret: ${GITHUB_CLIENT_SECRET}
 
