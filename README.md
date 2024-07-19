@@ -7,3 +7,4 @@
 - [Scheduler](./scheduler/README.md): 스프링 스케쥴러에 대해 알아보자
 - [@RequestScope](./request-scope/README.md): @RequestScope에 대해서 알아보자
 - [findByXxxId](./findByXxxId/README.md): findByXxxId의 문제점이 무엇이었고, 요즘은 어떤지 알아보자
+- [oauth](./oauth/README.md): 깃허브를 통한 oauth 인증에 대해 알아보자
