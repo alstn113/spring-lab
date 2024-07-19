@@ -11,8 +11,8 @@ public class PageController {
         return "index";
     }
 
-    @GetMapping("/sub")
+    @GetMapping("/detail")
     public String login() {
-        return "sub";
+        return "detail";
     }
 }

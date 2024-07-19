@@ -1,36 +1,34 @@
 package com.project.auth.ui;
 
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import com.project.auth.application.AuthService;
+import com.project.auth.application.GithubOAuthService;
+import com.project.auth.application.oauth.SocialProfile;
+import com.project.auth.domain.MemberResponse;
+import com.project.auth.domain.MemberService;
+import com.project.auth.domain.Provider;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 public class AuthController {
 
-    private static final String REDIRECT_URI = "http://localhost:8080/auth/social/callback/github";
-    private static final String CLIENT = "http://localhost:8080";
+    private static final String TOKEN_COOKIE_NAME = "token";
+    private static final int COOKIE_MAX_AGE_ONE_DAY = 60 * 60 * 24;
 
-    private final Logger log = LoggerFactory.getLogger(AuthController.class);
+    private final GithubOAuthService githubOAuthService;
+    private final MemberService memberService;
+    private final AuthService authService;
 
-    private final String clientId;
-    private final String clientSecret;
-
-    public AuthController(
-            @Value("${auth.github.client-id}") String clientId,
-            @Value("${auth.github.client-secret}") String clientSecret
-    ) {
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
+    public AuthController(GithubOAuthService githubOAuthService, MemberService memberService, AuthService authService) {
+        this.githubOAuthService = githubOAuthService;
+        this.memberService = memberService;
+        this.authService = authService;
     }
 
     @GetMapping("/auth/social/redirect/github")
@@ -38,23 +36,8 @@ public class AuthController {
             @RequestParam(value = "next", defaultValue = "/") String next,
             HttpServletResponse response
     ) throws IOException {
-        String redirectUri = UriComponentsBuilder.fromHttpUrl(REDIRECT_URI)
-                .queryParam("next", next)
-                .build()
-                .toUriString();
-
-        log.info("Redirect URI: {}", redirectUri);
-
-        String loginUrl = UriComponentsBuilder.fromHttpUrl("https://github.com/login/oauth/authorize")
-                .queryParam("client_id", clientId)
-                .queryParam("redirect_uri", redirectUri)
-                .queryParam("scope", "user:email")
-                .build()
-                .toUriString();
-
-        log.info("Login URL: {}", loginUrl);
-
-        response.sendRedirect(loginUrl);
+        String redirectUri = githubOAuthService.getLoginUrl(next);
+        response.sendRedirect(redirectUri);
     }
 
     @GetMapping("/auth/social/callback/github")
@@ -63,54 +46,42 @@ public class AuthController {
             @RequestParam(value = "next", defaultValue = "/") String next,
             HttpServletResponse response
     ) throws IOException {
-        String accessToken = getAccessToken(code, clientId, clientSecret);
-        log.info("Access token: {}", accessToken);
+        String accessToken = githubOAuthService.getAccessToken(code);
+        SocialProfile socialProfile = githubOAuthService.getUserInfo(accessToken);
 
-        SocialProfile socialProfile = getUserInfo(accessToken);
-        log.info("Social profile: {}", socialProfile);
+        MemberResponse memberResponse = memberService.findOrCreateMember(socialProfile, Provider.GITHUB);
+        String token = authService.createToken(memberResponse.id());
 
-        String redirectUri = UriComponentsBuilder.fromHttpUrl(CLIENT)
-                .path(next)
-                .build()
-                .toUriString();
+        setTokenCookie(response, token);
 
+        // Token을 쿠키에 저장하는게 아닌 query param으로 전달할 수도 있습니다.
+        // ex) http://localhost:8080/?token=abc
+        String redirectUri = githubOAuthService.getClientUri(next);
         response.sendRedirect(redirectUri);
     }
 
-    private String getAccessToken(String code, String clientId, String clientSecret) {
-        RestClient restClient = RestClient.create();
+    @PostMapping("/auth/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        clearTokenCookie(response);
 
-        GithubAccessTokenRequest request = new GithubAccessTokenRequest(code, clientId, clientSecret);
-        GithubAccessTokenResponse response = restClient.post()
-                .uri("https://github.com/login/oauth/access_token")
-                .contentType(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .body(request)
-                .retrieve()
-                .body(GithubAccessTokenResponse.class);
-
-        if (response == null) {
-            throw new IllegalArgumentException("Failed to get access token");
-        }
-
-        return response.access_token();
+        return ResponseEntity.ok().build();
     }
 
-    private SocialProfile getUserInfo(String accessToken) {
-        RestClient restClient = RestClient.create();
+    private void setTokenCookie(HttpServletResponse response, String token) {
+        Cookie cookie = new Cookie(TOKEN_COOKIE_NAME, token);
+        cookie.setMaxAge(COOKIE_MAX_AGE_ONE_DAY);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
 
-        SocialProfile socialProfile = restClient.get()
-                .uri("https://api.github.com/user")
-                .header(AUTHORIZATION, "Bearer " + accessToken)
-                .accept(APPLICATION_JSON)
-                .retrieve()
-                .body(SocialProfile.class);
+        response.addCookie(cookie);
+    }
 
-        if (socialProfile == null) {
-            throw new IllegalArgumentException("Failed to get user info");
-        }
+    private void clearTokenCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie(TOKEN_COOKIE_NAME, null);
+        cookie.setMaxAge(0);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
 
-        return socialProfile;
+        response.addCookie(cookie);
     }
 }
-

@@ -17,9 +17,6 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  # 이 프로젝트만 따로 열어서 실행하세요
-  config:
-    import: optional:file:.env[.properties]
 
 logging:
   level:
@@ -28,8 +25,18 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
 
+api-host: http://localhost:8080
+client-host: http://localhost:8080
+
 auth:
   github:
-    client-id: ${GITHUB_CLIENT_ID}
-    client-secret: ${GITHUB_CLIENT_SECRET}
+    client-id: 여기에 클라이언트 아이디를 입력하세요!
+    client-secret: 여기에 클라이언트 시크릿을 입력하세요!
+    redirect-uri: ${api-host}/auth/social/callback/github
+    client-uri: ${client-host}
+
+security:
+  jwt:
+    secret-key: 7b3dc341c033816045cc11c6f9fba3187f4dbdb7
+    expiration-time: 86400000 # 1 day
 
