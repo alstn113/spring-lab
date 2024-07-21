@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -17,12 +16,14 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional(readOnly = true)
     public MemberResponse getMemberById(Long id) {
         return memberRepository.findById(id)
                 .map(MemberResponse::from)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
     }
 
+    @Transactional
     public MemberResponse findOrCreateMember(SocialProfile profile, Provider provider) {
         Member member = memberRepository.findBySocialIdAndProvider(profile.id(), provider)
                 .orElseGet(() -> memberRepository.save(profile.toMember(provider)));
