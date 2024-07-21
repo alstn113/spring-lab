@@ -2,14 +2,15 @@ package com.project.auth.ui;
 
 import java.io.IOException;
 import com.project.auth.application.AuthService;
-import com.project.auth.infra.oauth.GithubOAuthService;
-import com.project.auth.infra.oauth.SocialProfile;
 import com.project.auth.application.MemberResponse;
 import com.project.auth.application.MemberService;
 import com.project.auth.domain.Provider;
+import com.project.auth.infra.oauth.GithubOAuthService;
+import com.project.auth.infra.oauth.SocialProfile;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,11 +61,11 @@ public class AuthController {
         response.sendRedirect(redirectUri);
     }
 
-    @PostMapping("/auth/logout")
+    @DeleteMapping("/auth/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) {
         clearTokenCookie(response);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     private void setTokenCookie(HttpServletResponse response, String token) {

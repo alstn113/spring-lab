@@ -38,15 +38,15 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        boolean hasAuthAnnotation = parameter.hasParameterAnnotation(BindAuth.class);
-        boolean isAuthType = BindAuth.class.isAssignableFrom(parameter.getParameterType());
+        boolean hasBindAuthAnnotation = parameter.hasParameterAnnotation(BindAuth.class);
+        boolean isAccessorClass = Accessor.class.isAssignableFrom(parameter.getParameterType());
 
-        return hasAuthAnnotation && isAuthType;
+        return hasBindAuthAnnotation && isAccessorClass;
     }
 
     @Override
     public Accessor resolveArgument(
-            MethodParameter parameter,
+            @NonNull MethodParameter parameter,
             ModelAndViewContainer mavContainer,
             @NonNull NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
@@ -65,7 +65,6 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
         }
 
         Long memberId = authService.getMemberIdByToken(token.get());
-        log.debug("액세스 토큰을 통해 회원 ID를 조회했습니다. [memberId={}]", memberId);
         MemberResponse memberResponse = memberService.getMemberById(memberId);
         return new Accessor(memberResponse.id());
     }
