@@ -1,4 +1,4 @@
-package com.project.auth.application;
+package com.project.auth.infra.security;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

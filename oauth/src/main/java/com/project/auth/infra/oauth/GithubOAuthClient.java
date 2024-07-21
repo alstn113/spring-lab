@@ -1,4 +1,4 @@
-package com.project.auth.application.oauth;
+package com.project.auth.infra.oauth;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;

@@ -1,4 +1,4 @@
-package com.project.auth.application.oauth;
+package com.project.auth.infra.oauth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.auth.domain.Member;

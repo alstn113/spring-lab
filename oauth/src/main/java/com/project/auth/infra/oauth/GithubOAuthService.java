@@ -1,10 +1,5 @@
-package com.project.auth.application;
+package com.project.auth.infra.oauth;
 
-import com.project.auth.application.oauth.GithubAccessTokenRequest;
-import com.project.auth.application.oauth.GithubAccessTokenResponse;
-import com.project.auth.application.oauth.GithubOAuthClient;
-import com.project.auth.application.oauth.GithubOAuthProperties;
-import com.project.auth.application.oauth.SocialProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

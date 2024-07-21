@@ -1,4 +1,6 @@
-package com.project.auth.domain;
+package com.project.auth.application;
+
+import com.project.auth.domain.Member;
 
 public record MemberResponse(Long id, String email, String name, String imageUrl) {
 

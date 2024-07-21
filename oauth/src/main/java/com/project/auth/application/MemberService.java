@@ -1,6 +1,9 @@
-package com.project.auth.domain;
+package com.project.auth.application;
 
-import com.project.auth.application.oauth.SocialProfile;
+import com.project.auth.domain.Member;
+import com.project.auth.domain.MemberRepository;
+import com.project.auth.domain.Provider;
+import com.project.auth.infra.oauth.SocialProfile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +15,12 @@ public class MemberService {
 
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
+    }
+
+    public MemberResponse getMemberById(Long id) {
+        return memberRepository.findById(id)
+                .map(MemberResponse::from)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
     }
 
     public MemberResponse findOrCreateMember(SocialProfile profile, Provider provider) {

@@ -1,9 +1,8 @@
-package com.project.auth.application.oauth;
+package com.project.auth.infra.security;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import com.project.auth.application.JwtTokenProperties;
 import com.project.auth.application.TokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

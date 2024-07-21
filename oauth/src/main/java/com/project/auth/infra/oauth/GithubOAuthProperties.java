@@ -1,4 +1,4 @@
-package com.project.auth.application.oauth;
+package com.project.auth.infra.oauth;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -2,10 +2,10 @@ package com.project.auth.ui;
 
 import java.io.IOException;
 import com.project.auth.application.AuthService;
-import com.project.auth.application.GithubOAuthService;
-import com.project.auth.application.oauth.SocialProfile;
-import com.project.auth.domain.MemberResponse;
-import com.project.auth.domain.MemberService;
+import com.project.auth.infra.oauth.GithubOAuthService;
+import com.project.auth.infra.oauth.SocialProfile;
+import com.project.auth.application.MemberResponse;
+import com.project.auth.application.MemberService;
 import com.project.auth.domain.Provider;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
