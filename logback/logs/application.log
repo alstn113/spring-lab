@@ -1,0 +1,77 @@
+2024-08-04 19:24:52.945 | main | INFO  | com.logback.LogbackApplication | Starting LogbackApplication using Java 21.0.3 with PID 3331 (/Users/kms/Desktop/spring-lab/logback/build/classes/java/main started by kms in /Users/kms/Desktop/spring-lab/logback)
+2024-08-04 19:24:52.946 | main | INFO  | com.logback.LogbackApplication | No active profile set, falling back to 1 default profile: "default"
+2024-08-04 19:24:53.366 | main | INFO  | o.s.b.w.e.tomcat.TomcatWebServer | Tomcat initialized with port 8080 (http)
+2024-08-04 19:24:53.373 | main | INFO  | o.a.coyote.http11.Http11NioProtocol | Initializing ProtocolHandler ["http-nio-8080"]
+2024-08-04 19:24:53.374 | main | INFO  | o.a.catalina.core.StandardService | Starting service [Tomcat]
+2024-08-04 19:24:53.374 | main | INFO  | o.a.catalina.core.StandardEngine | Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-04 19:24:53.395 | main | INFO  | o.a.c.c.C.[Tomcat].[localhost].[/] | Initializing Spring embedded WebApplicationContext
+2024-08-04 19:24:53.395 | main | INFO  | o.s.b.w.s.c.ServletWebServerApplicationContext | Root WebApplicationContext: initialization completed in 427 ms
+2024-08-04 19:24:53.553 | main | INFO  | o.a.coyote.http11.Http11NioProtocol | Starting ProtocolHandler ["http-nio-8080"]
+2024-08-04 19:24:53.562 | main | INFO  | o.s.b.w.e.tomcat.TomcatWebServer | Tomcat started on port 8080 (http) with context path '/'
+2024-08-04 19:24:53.567 | main | INFO  | com.logback.LogbackApplication | Started LogbackApplication in 0.839 seconds (process running for 1.203)
+2024-08-04 19:25:47.385 | main | INFO  | com.logback.LogbackApplication | Starting LogbackApplication using Java 21.0.3 with PID 3348 (/Users/kms/Desktop/spring-lab/logback/build/classes/java/main started by kms in /Users/kms/Desktop/spring-lab/logback)
+2024-08-04 19:25:47.386 | main | INFO  | com.logback.LogbackApplication | No active profile set, falling back to 1 default profile: "default"
+2024-08-04 19:25:47.767 | main | INFO  | o.s.b.w.e.tomcat.TomcatWebServer | Tomcat initialized with port 8080 (http)
+2024-08-04 19:25:47.772 | main | INFO  | o.a.coyote.http11.Http11NioProtocol | Initializing ProtocolHandler ["http-nio-8080"]
+2024-08-04 19:25:47.773 | main | INFO  | o.a.catalina.core.StandardService | Starting service [Tomcat]
+2024-08-04 19:25:47.773 | main | INFO  | o.a.catalina.core.StandardEngine | Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-04 19:25:47.793 | main | INFO  | o.a.c.c.C.[Tomcat].[localhost].[/] | Initializing Spring embedded WebApplicationContext
+2024-08-04 19:25:47.793 | main | INFO  | o.s.b.w.s.c.ServletWebServerApplicationContext | Root WebApplicationContext: initialization completed in 388 ms
+2024-08-04 19:25:47.940 | main | INFO  | o.a.coyote.http11.Http11NioProtocol | Starting ProtocolHandler ["http-nio-8080"]
+2024-08-04 19:25:47.945 | main | INFO  | o.s.b.w.e.tomcat.TomcatWebServer | Tomcat started on port 8080 (http) with context path '/'
+2024-08-04 19:25:47.949 | main | INFO  | com.logback.LogbackApplication | Started LogbackApplication in 0.778 seconds (process running for 1.167)
+2024-08-04 19:26:10.581 | main | INFO  | com.logback.LogbackApplication | Starting LogbackApplication using Java 21.0.3 with PID 3363 (/Users/kms/Desktop/spring-lab/logback/build/classes/java/main started by kms in /Users/kms/Desktop/spring-lab/logback)
+2024-08-04 19:26:10.582 | main | INFO  | com.logback.LogbackApplication | No active profile set, falling back to 1 default profile: "default"
+2024-08-04 19:26:10.954 | main | INFO  | o.s.b.w.e.tomcat.TomcatWebServer | Tomcat initialized with port 8080 (http)
+2024-08-04 19:26:10.958 | main | INFO  | o.a.coyote.http11.Http11NioProtocol | Initializing ProtocolHandler ["http-nio-8080"]
+2024-08-04 19:26:10.959 | main | INFO  | o.a.catalina.core.StandardService | Starting service [Tomcat]
+2024-08-04 19:26:10.959 | main | INFO  | o.a.catalina.core.StandardEngine | Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-04 19:26:10.977 | main | INFO  | o.a.c.c.C.[Tomcat].[localhost].[/] | Initializing Spring embedded WebApplicationContext
+2024-08-04 19:26:10.977 | main | INFO  | o.s.b.w.s.c.ServletWebServerApplicationContext | Root WebApplicationContext: initialization completed in 376 ms
+2024-08-04 19:26:11.104 | main | INFO  | o.a.coyote.http11.Http11NioProtocol | Starting ProtocolHandler ["http-nio-8080"]
+2024-08-04 19:26:11.110 | main | INFO  | o.s.b.w.e.tomcat.TomcatWebServer | Tomcat started on port 8080 (http) with context path '/'
+2024-08-04 19:26:11.114 | main | INFO  | com.logback.LogbackApplication | Started LogbackApplication in 0.727 seconds (process running for 0.978)
+2024-08-04 19:27:16.422 | main | INFO  | com.logback.LogbackApplication | Starting LogbackApplication using Java 21.0.3 with PID 3817 (/Users/kms/Desktop/spring-lab/logback/build/classes/java/main started by kms in /Users/kms/Desktop/spring-lab/logback)
+2024-08-04 19:27:16.424 | main | INFO  | com.logback.LogbackApplication | No active profile set, falling back to 1 default profile: "default"
+2024-08-04 19:27:16.872 | main | INFO  | o.s.b.w.e.tomcat.TomcatWebServer | Tomcat initialized with port 8080 (http)
+2024-08-04 19:27:16.878 | main | INFO  | o.a.coyote.http11.Http11NioProtocol | Initializing ProtocolHandler ["http-nio-8080"]
+2024-08-04 19:27:16.879 | main | INFO  | o.a.catalina.core.StandardService | Starting service [Tomcat]
+2024-08-04 19:27:16.880 | main | INFO  | o.a.catalina.core.StandardEngine | Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-04 19:27:16.903 | main | INFO  | o.a.c.c.C.[Tomcat].[localhost].[/] | Initializing Spring embedded WebApplicationContext
+2024-08-04 19:27:16.903 | main | INFO  | o.s.b.w.s.c.ServletWebServerApplicationContext | Root WebApplicationContext: initialization completed in 438 ms
+2024-08-04 19:27:17.066 | main | INFO  | o.a.coyote.http11.Http11NioProtocol | Starting ProtocolHandler ["http-nio-8080"]
+2024-08-04 19:27:17.068 | main | WARN  | o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2024-08-04 19:27:17.074 | main | INFO  | o.s.b.a.l.ConditionEvaluationReportLogger | 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-08-04 19:27:17.083 | main | ERROR | o.s.b.d.LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2024-08-04 19:27:28.328 | main | INFO  | com.logback.LogbackApplication | Starting LogbackApplication using Java 21.0.3 with PID 3834 (/Users/kms/Desktop/spring-lab/logback/build/classes/java/main started by kms in /Users/kms/Desktop/spring-lab/logback)
+2024-08-04 19:27:28.328 | main | INFO  | com.logback.LogbackApplication | No active profile set, falling back to 1 default profile: "default"
+2024-08-04 19:27:28.760 | main | INFO  | o.s.b.w.e.tomcat.TomcatWebServer | Tomcat initialized with port 8080 (http)
+2024-08-04 19:27:28.766 | main | INFO  | o.a.coyote.http11.Http11NioProtocol | Initializing ProtocolHandler ["http-nio-8080"]
+2024-08-04 19:27:28.766 | main | INFO  | o.a.catalina.core.StandardService | Starting service [Tomcat]
+2024-08-04 19:27:28.766 | main | INFO  | o.a.catalina.core.StandardEngine | Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-04 19:27:28.787 | main | INFO  | o.a.c.c.C.[Tomcat].[localhost].[/] | Initializing Spring embedded WebApplicationContext
+2024-08-04 19:27:28.787 | main | INFO  | o.s.b.w.s.c.ServletWebServerApplicationContext | Root WebApplicationContext: initialization completed in 438 ms
+2024-08-04 19:27:28.937 | main | INFO  | o.a.coyote.http11.Http11NioProtocol | Starting ProtocolHandler ["http-nio-8080"]
+2024-08-04 19:27:28.943 | main | INFO  | o.s.b.w.e.tomcat.TomcatWebServer | Tomcat started on port 8080 (http) with context path '/'
+2024-08-04 19:27:28.947 | main | INFO  | com.logback.LogbackApplication | Started LogbackApplication in 0.864 seconds (process running for 1.158)
+2024-08-04 19:27:29.450 | http-nio-8080-exec-1 | INFO  | o.a.c.c.C.[Tomcat].[localhost].[/] | Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-08-04 19:27:29.450 | http-nio-8080-exec-1 | INFO  | o.s.web.servlet.DispatcherServlet | Initializing Servlet 'dispatcherServlet'
+2024-08-04 19:27:29.450 | http-nio-8080-exec-1 | INFO  | o.s.web.servlet.DispatcherServlet | Completed initialization in 0 ms
+2024-08-04 19:27:29.469 | http-nio-8080-exec-1 | INFO  | com.logback.DemoController | all
+2024-08-04 19:27:29.469 | http-nio-8080-exec-1 | WARN  | com.logback.DemoController | all
+2024-08-04 19:27:29.469 | http-nio-8080-exec-1 | ERROR | com.logback.DemoController | all
