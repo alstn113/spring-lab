@@ -9,3 +9,4 @@
 - [findByXxxId](./findByXxxId/README.md): findByXxxId의 문제점이 무엇이었고, 요즘은 어떤지 알아보자
 - [oauth](./oauth/README.md): 깃허브를 통한 oauth 인증에 대해 알아보자
 - [logback](./logback/README.md): logback 설정에 대해 알아보자
+- [propagation](./propagation/README.md): 트랜잭션 전파에 대해 알아보자

@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
