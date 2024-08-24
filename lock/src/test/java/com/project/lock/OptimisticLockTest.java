@@ -1,7 +1,7 @@
 package com.project.lock;
 
-import com.project.lock.application.AccountService;
-import com.project.lock.domain.Account;
+import com.project.lock.application.PointService;
+import com.project.lock.domain.Point;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,17 +16,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 class OptimisticLockTest {
 
     @Autowired
-    private AccountService accountService;
+    private PointService pointService;
 
     @Test
     @DisplayName("""
-            여러 스레드에서 동시에 출금을 시도할 때, 출금이 정상적으로 처리되는지 확인하는 테스트 (비관적 락)
-            - 잔액이 10,000원인 계좌를 생성한 후, 5개의 스레드에서 각각 3,000원을 출금하도록 시도
-            - 3개의 스레드에서는 출금에 성공하고, 2개의 스레드에서는 출금에 실패하는 것을 확인
+            여러 스레드에서 동시에 포인트를 차감할 때, 포인트 차감이 정상적으로 처리되는지 확인하는 테스트 (낙관적 락)
+            - 포인트가 10,000점인 계좌를 생성한 후, 5개의 스레드에서 각각 3,000점을 차감하도록 시도
+            - 첫번째만 차감에 성공하고, 나머지는 버전이 다르다는 예외가 발생하는 것을 확인
             """)
-    void withdraw() throws InterruptedException {
+    void subtractPoint() throws InterruptedException {
         // given
-        Account account = accountService.createAccount(10_000L);
+        Point point = pointService.createPoint(10_000L);
 
         int numberOfExecute = 5;
 
@@ -40,7 +40,7 @@ class OptimisticLockTest {
         for (int i = 0; i < numberOfExecute; i++) {
             executorsService.submit(() -> {
                 try {
-                    accountService.withdraw(account.getId(), 3_000L);
+                    pointService.subtractPoint(point.getId(), 3_000L);
                     successCount.incrementAndGet();
                 } catch (Exception e) {
                     failCount.incrementAndGet();
@@ -53,9 +53,9 @@ class OptimisticLockTest {
 
         // then
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(accountService.getBalance(account.getId())).isEqualTo(1_000L);
-            softly.assertThat(successCount.get()).isEqualTo(3);
-            softly.assertThat(failCount.get()).isEqualTo(2);
+            softly.assertThat(pointService.getPoint(point.getId())).isEqualTo(7_000L);
+            softly.assertThat(successCount.get()).isEqualTo(1);
+            softly.assertThat(failCount.get()).isEqualTo(4);
         });
     }
 }
