@@ -5,6 +5,7 @@
 - [비관적 락](https://isntyet.github.io/jpa/JPA-비관적-잠금(Pessimistic-Lock)/)
 - [낙관적 락1](https://velog.io/@znftm97/동시성-문제-해결하기-V1-낙관적-락Optimisitc-Lock-feat.데드락-첫-만남)
 - [낙관적 락2](https://devoong2.tistory.com/entry/JPA-에서-낙관적-락Optimistic-Lock을-이용해-동시성-처리하기)
+- [둘 다](https://velog.io/@hyojhand/상품-주문-동시성-문제-해결하기-DeadLock-낙관적-락-비관적-락)
 
 ## 비관적 락(Pessimistic Lock)
 
