@@ -1,8 +1,12 @@
 # flyway에 대해서 알아보자
 
+## 참고
+
+- [개념](https://hudi.blog/dallog-flyway/)
+
 ## 간단 개념
 
-flyway는 오픈소스 데이터베이스 마이그레이션 툴이다.    
+flyway는 오픈소스 데이터베이스 마이그레이션 툴이다.  
 Git과 같이 변경 사항을 추적하고, 업데이트나 롤백을 쉽게 할 수 있게 도와준다.
 
 프로젝트가 진행되면서 데이터베이스를 여러 환경에서 사용하게 되고, 이를 관리하기 위해 사용한다.
@@ -20,8 +24,8 @@ dependencies {
 }
 ```
 
-resources/db/migration 에서 V1__{init}.sql 형식으로 파일을 작성한다.
-수정 시에는 V2__{update}.sql 형식으로 파일을 작성한다.
+resources/db/migration 에서 V1**{init}.sql 형식으로 파일을 작성한다.
+수정 시에는 V2**{update}.sql 형식으로 파일을 작성한다.
 
 ## 참고
 
