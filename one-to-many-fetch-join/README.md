@@ -1,4 +1,4 @@
-# OneToMany에서 Fetch Join 사용 시 문제를 알아보자
+# OneToMany에서 Fetch Join 사용 시 문제점를 대해 알아보자
 
 ## 참고 자료
 

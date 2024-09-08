@@ -14,3 +14,4 @@
 - [monitoring](./monitoring/README.md): 스프링 모니터링에 대해 알아보자
 - [jpa-value-type](./jpa-value-type/README.md): JPA 값 타입에 대해 알아보자
 - [persistence-context](./persistence-context/README.md): 영속성 컨텍스트에 대해서 알아보자
+- [one-to-many-fetch-join](./one-to-many-fetch-join/README.md): OneToMany에서 Fetch Join 사용 시 문제점를 대해 알아보자
