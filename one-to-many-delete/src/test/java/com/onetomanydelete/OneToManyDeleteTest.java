@@ -1,7 +1,6 @@
 package com.onetomanydelete;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.onetomanydelete.domain.Comment;
 import com.onetomanydelete.domain.CommentRepository;
@@ -28,7 +27,6 @@ class OneToManyDeleteTest {
     @Test
     @DisplayName("CASCADE REMOVE로 인해서 Post가 삭제되면 Comment도 삭제된다.")
     void test1() {
-        // given
         Post post = new Post("Post 1");
         Comment comment1 = new Comment("Comment 1", post);
         Comment comment2 = new Comment("Comment 2", post);
@@ -36,17 +34,13 @@ class OneToManyDeleteTest {
         post.addComment(comment2);
         postRepository.save(post);
 
-        em.flush();
-        em.clear();
+        assertThat(postRepository.findAll()).hasSize(1);
+        assertThat(commentRepository.findAll()).hasSize(2);
 
-        // when
         postRepository.delete(post);
 
-        // then
-        assertAll(
-                () -> assertThat(postRepository.findAll()).isEmpty(),
-                () -> assertThat(commentRepository.findAll()).isEmpty()
-        );
+        assertThat(postRepository.findAll()).isEmpty();
+        assertThat(commentRepository.findAll()).isEmpty();
     }
 
     @Test
@@ -55,27 +49,16 @@ class OneToManyDeleteTest {
             Post에서 Comment의 관계를 끊으면 자식은 고아 객체로 인식되어 삭제된다.
             """)
     void test2() {
-        // given
         Post post = new Post("Post 1");
         Comment comment1 = new Comment("Comment 1", post);
         Comment comment2 = new Comment("Comment 2", post);
         post.addComment(comment1);
         post.addComment(comment2);
+        postRepository.save(post);
 
-        em.flush();
-        em.clear();
+        post.getComments().remove(0);
 
-        // when
-        Post foundPost = postRepository.findById(post.getId()).orElseThrow();
-        foundPost.getComments().remove(0);
-
-        em.flush();
-        em.clear();
-
-        // then
-        assertAll(
-                () -> assertThat(postRepository.findAll()).hasSize(1),
-                () -> assertThat(commentRepository.findAll()).hasSize(1)
-        );
+        assertThat(postRepository.findAll()).hasSize(1);
+        assertThat(commentRepository.findAll()).hasSize(1);
     }
 }
