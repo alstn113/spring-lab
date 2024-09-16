@@ -11,17 +11,23 @@ public class PostApiClient {
 
     private static final Logger log = LoggerFactory.getLogger(PostApiClient.class);
 
+    private final PostApiProperties properties;
     private final RestClient restClient;
 
-    public PostApiClient(RestClient.Builder restClientBuilder) {
+    public PostApiClient(
+            PostApiProperties properties,
+            RestClient.Builder restClientBuilder
+    ) {
+        this.properties = properties;
         this.restClient = restClientBuilder.build();
     }
 
     public PostApiResponse getPostById(Long id) {
         log.info("Fetching post by id: {}", id);
 
+        String url = "%s/%d".formatted(properties.url(), id);
         PostApiResponse postApiResponse = restClient.get()
-                .uri("https://jsonplaceholder.typicode.com/posts/%d".formatted(id))
+                .uri(url)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
                     throw new IllegalArgumentException("Post API 4xx Failed");

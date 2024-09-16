@@ -3,6 +3,9 @@
 ## 참고
 
 - [RestClientTest 공식 문서 중요!!](https://docs.spring.io/spring-boot/api/java/org/springframework/boot/test/autoconfigure/web/client/RestClientTest.html)
+- [좋은 블로그1](https://javabom.tistory.com/6)
+- [좋은 블로그2](https://velog.io/@viiviii/rest-clien-test-memo)
+- [좋은 블로그3](https://jaeseo.tistory.com/entry/Spring-AOP-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B2%A9%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-MockRestServiceServer-%EC%B4%88%EA%B8%B0%ED%99%94)
 - [향로 블로그](https://jojoldu.tistory.com/341)
 
 ## RestClientTest를 왜 사용하나?

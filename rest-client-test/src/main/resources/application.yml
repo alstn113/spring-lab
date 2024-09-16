@@ -5,3 +5,7 @@ spring:
     console:
       path: /h2-console
       enabled: true
+
+post:
+  api:
+    url: https://jsonplaceholder.typicode.com/posts
