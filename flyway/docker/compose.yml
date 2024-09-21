@@ -1,16 +1,15 @@
 services:
-  db:
-    image: mysql:8.0
+  mysql:
+    image: mysql:8.0.28
     platform: linux/x86_64
     restart: always
     ports:
-      - 3306:3306
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: flyway-study
+      MYSQL_DATABASE: flyway
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       TZ: Asia/Seoul
     volumes:
-      # MySQL Init Script
-      - ./db/mysql/init:/docker-entrypoint-initdb.d
+      - ./db/mysql/data:/var/lib/mysql

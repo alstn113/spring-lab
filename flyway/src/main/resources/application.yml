@@ -1,19 +1,19 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/flyway-study
+    url: jdbc:mysql://localhost:3306/flyway?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: user
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    hibernate:
-      ddl-auto: validate
     show-sql: true
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true
         highlight_sql: true
-    defer-datasource-initialization: false
-    open-in-view: false
+    hibernate:
+      ddl-auto: validate
   flyway:
     enabled: true
-    baseline-on-migrate: true
+#    baseline-on-migrate: true # flyway를 사용하기 전에 있던 schema를 baseline으로 설정
+#    baseline-version: 0
