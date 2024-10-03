@@ -6,7 +6,7 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
-        default_batch_fetch_size: 100
+        default_batch_fetch_size: 30 # 이 부분이 batch fetch size 설정입니다.
 logging:
   level:
     org.springframework.orm.jpa: DEBUG
