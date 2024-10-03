@@ -1,7 +1,8 @@
-package com.pagination.domain;
+package com.pagination.domain.post;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.pagination.domain.comment.Comment;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

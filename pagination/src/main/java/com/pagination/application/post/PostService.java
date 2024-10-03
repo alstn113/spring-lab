@@ -1,8 +1,9 @@
-package com.pagination.application;
+package com.pagination.application.post;
 
 import java.util.List;
-import com.pagination.domain.Post;
-import com.pagination.domain.PostRepository;
+import com.pagination.domain.post.Post;
+import com.pagination.domain.post.PostRepository;
+import com.pagination.domain.post.PostRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,7 @@ public class PostService {
 
     private final PostMapper PostMapper;
     private final PostRepository postRepository;
+    private final PostRepositoryCustom postRepositoryCustom;
 
     @Transactional(readOnly = true)
     public List<PostResponse> getPagingPosts(int size, int page) {
@@ -24,5 +26,13 @@ public class PostService {
         return pagingPosts.getContent().stream()
                 .map(PostMapper::toResponse)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public PostResponse getPost(String title) {
+        Post post = postRepositoryCustom.searchByWhere(title)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+
+        return PostMapper.toResponse(post);
     }
 }

@@ -1,7 +1,7 @@
-package com.pagination.application;
+package com.pagination.application.Log;
 
 import java.util.List;
-import com.pagination.domain.Log;
+import com.pagination.domain.log.Log;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

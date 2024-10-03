@@ -1,12 +1,13 @@
-package com.pagination.domain;
+package com.pagination.domain.reaction;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.pagination.domain.comment.Comment;
+import com.pagination.domain.log.Log;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -18,30 +19,30 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Comment {
+public class Reaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
-    private String content;
+    private String action;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
+    @JoinColumn(name = "comment_id", nullable = false)
+    private Comment comment;
 
-    @OneToMany(mappedBy = "comment")
-    private List<Reaction> reactions;
+    @OneToMany(mappedBy = "reaction")
+    private List<Log> logs;
 
-    public Comment(String content, Post post) {
-        this(null, content, post, new ArrayList<>());
+    public Reaction(String action, Comment comment) {
+        this(null, action, comment, new ArrayList<>());
     }
 
-    public Comment(Long id, String content, Post post, List<Reaction> reactions) {
+    public Reaction(Long id, String action, Comment comment, List<Log> logs) {
         this.id = id;
-        this.content = content;
-        this.post = post;
-        this.reactions = reactions;
+        this.action = action;
+        this.comment = comment;
+        this.logs = logs;
     }
 }

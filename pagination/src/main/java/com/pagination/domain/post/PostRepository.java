@@ -1,4 +1,4 @@
-package com.pagination.domain;
+package com.pagination.domain.post;
 
 
 import org.springframework.data.domain.Page;

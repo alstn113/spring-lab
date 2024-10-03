@@ -2,14 +2,14 @@ package com.pagination;
 
 
 import java.util.Random;
-import com.pagination.domain.Comment;
-import com.pagination.domain.CommentRepository;
-import com.pagination.domain.Log;
-import com.pagination.domain.LogRepository;
-import com.pagination.domain.Post;
-import com.pagination.domain.PostRepository;
-import com.pagination.domain.Reaction;
-import com.pagination.domain.ReactionRepository;
+import com.pagination.domain.comment.Comment;
+import com.pagination.domain.comment.CommentRepository;
+import com.pagination.domain.log.Log;
+import com.pagination.domain.log.LogRepository;
+import com.pagination.domain.post.Post;
+import com.pagination.domain.post.PostRepository;
+import com.pagination.domain.reaction.Reaction;
+import com.pagination.domain.reaction.ReactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

@@ -1,5 +1,6 @@
-package com.pagination.domain;
+package com.pagination.domain.log;
 
+import com.pagination.domain.reaction.Reaction;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

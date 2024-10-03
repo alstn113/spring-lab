@@ -1,4 +1,4 @@
-package com.pagination.domain;
+package com.pagination.domain.reaction;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

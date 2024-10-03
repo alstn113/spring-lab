@@ -1,7 +1,8 @@
-package com.pagination.application;
+package com.pagination.application.reaction;
 
 import java.util.List;
-import com.pagination.domain.Reaction;
+import com.pagination.application.Log.LogMapper;
+import com.pagination.domain.reaction.Reaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

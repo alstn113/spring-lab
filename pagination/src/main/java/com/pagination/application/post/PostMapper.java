@@ -1,7 +1,8 @@
-package com.pagination.application;
+package com.pagination.application.post;
 
 import java.util.List;
-import com.pagination.domain.Post;
+import com.pagination.application.comment.CommentMapper;
+import com.pagination.domain.post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
