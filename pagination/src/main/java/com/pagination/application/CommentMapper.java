@@ -9,8 +9,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CommentMapper {
 
+    private final ReactionMapper reactionMapper;
+
     public CommentResponse toResponse(Comment comment) {
-        return new CommentResponse(comment.getId(), comment.getContent());
+        return new CommentResponse(
+                comment.getId(),
+                comment.getContent(),
+                reactionMapper.toResponses(comment.getReactions())
+        );
     }
 
     public List<CommentResponse> toResponses(List<Comment> comments) {

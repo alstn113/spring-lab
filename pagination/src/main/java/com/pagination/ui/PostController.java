@@ -18,7 +18,7 @@ public class PostController {
     @GetMapping("/posts")
     public ResponseEntity<?> getPosts(
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "0") int page // 페애지는 0부터 시작
     ) {
         List<PostResponse> response = postService.getPagingPosts(size, page);
 

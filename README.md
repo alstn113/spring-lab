@@ -17,3 +17,4 @@
 - [one-to-many-fetch-join](./one-to-many-fetch-join/README.md): OneToMany에서 Fetch Join 사용 시 문제점를 대해 알아보자
 - [rest-client-test](./rest-client-test/README.md): RestClientTest로 외부 API 요청 테스트를 하는 방법을 알아보자
 - [relation-delete](./relation-delete/README.md): 연관관계에서 자식들을 삭제하는 여러 방법들을 알아보자
+- [pagination](./pagination/README.md): 페이지네이션의 문제 상황들과 해결 방법을 알아보자

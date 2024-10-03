@@ -4,6 +4,8 @@ package com.pagination;
 import java.util.Random;
 import com.pagination.domain.Comment;
 import com.pagination.domain.CommentRepository;
+import com.pagination.domain.Log;
+import com.pagination.domain.LogRepository;
 import com.pagination.domain.Post;
 import com.pagination.domain.PostRepository;
 import com.pagination.domain.Reaction;
@@ -24,6 +26,7 @@ public class DataInitializer implements ApplicationRunner {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final ReactionRepository reactionRepository;
+    private final LogRepository logRepository;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -43,7 +46,13 @@ public class DataInitializer implements ApplicationRunner {
                 // 0 ~ 10개 사이 랜덤한 개수의 리액션을 생성
                 int reactionCount = new Random().nextInt(11);
                 for (int k = 0; k < reactionCount; k++) {
-                    reactionRepository.save(new Reaction("action %d".formatted(k), comment));
+                    Reaction reaction = reactionRepository.save(new Reaction("action %d".formatted(k), comment));
+
+                    // 0 ~ 10개 사이 랜덤한 개수의 로그를 생성
+                    int logCount = new Random().nextInt(11);
+                    for (int l = 0; l < logCount; l++) {
+                        logRepository.save(new Log("content %d".formatted(l), reaction));
+                    }
                 }
             }
         }
