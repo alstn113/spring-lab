@@ -5,7 +5,7 @@
 - [no offset(cursor) 방식 - 향로](https://jojoldu.tistory.com/528)
 - [메모리에서 페이징 막기](https://jojoldu.tistory.com/737)
 - [tecoble fetch join pagination](https://tecoble.techcourse.co.kr/post/2020-10-21-jpa-fetch-join-paging/)
-- [fetch join batch size](https://daydayplus.tistory.com/105)
+- [fetch join + batch size](https://daydayplus.tistory.com/105)
 
 ## 페이지네이션이란?
 
@@ -25,5 +25,7 @@ join fetch를 사용하지 않고, batch size를 적용하면 limit이 작동하
 1:N:N:N... 관계에서도 잘 작동한다.
 
 복잡한 관계에서 fetch join 후 batch size를 적용할 수도 있다.
+실험 결과 post(100) * (comment)10 * (reaction)10 * (log)10 개수, batch size=500, page size=10일 때 
+comment를 fetch join 적용하면 106ms, 적용하지 않으면 32ms가 걸린다. 일단 batch size만 하는게 좋은 것 같다.
 
 ## no offset 방식
