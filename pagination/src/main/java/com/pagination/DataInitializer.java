@@ -6,6 +6,8 @@ import com.pagination.domain.Comment;
 import com.pagination.domain.CommentRepository;
 import com.pagination.domain.Post;
 import com.pagination.domain.PostRepository;
+import com.pagination.domain.Reaction;
+import com.pagination.domain.ReactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -21,6 +23,7 @@ public class DataInitializer implements ApplicationRunner {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final ReactionRepository reactionRepository;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -32,10 +35,16 @@ public class DataInitializer implements ApplicationRunner {
         for (int i = 0; i < postCount; i++) {
             Post post = postRepository.save(new Post("title %d".formatted(i)));
 
-            // 0 ~ 20개 사이 랜덤한 개수의 댓글을 생성
-            int commentCount = new Random().nextInt(21);
+            // 0 ~ 10개 사이 랜덤한 개수의 댓글을 생성
+            int commentCount = new Random().nextInt(11);
             for (int j = 0; j < commentCount; j++) {
-                commentRepository.save(new Comment("comment %d".formatted(j), post));
+                Comment comment = commentRepository.save(new Comment("comment %d".formatted(j), post));
+
+                // 0 ~ 10개 사이 랜덤한 개수의 리액션을 생성
+                int reactionCount = new Random().nextInt(11);
+                for (int k = 0; k < reactionCount; k++) {
+                    reactionRepository.save(new Reaction("action %d".formatted(k), comment));
+                }
             }
         }
     }
