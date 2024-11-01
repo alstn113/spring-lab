@@ -8,6 +8,6 @@ public record MultipleChoiceQuestionRequest(
         AdditionalData additionalData
 ) implements QuestionRequest {
 
-    public record AdditionalData(List<String> options) {
+    public record AdditionalData(List<String> options, int correctOptionNumber) {
     }
 }

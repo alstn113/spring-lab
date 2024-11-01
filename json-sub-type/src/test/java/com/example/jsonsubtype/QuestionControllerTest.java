@@ -25,12 +25,25 @@ class QuestionControllerTest {
     }
 
     @Test
-    @DisplayName("다양한 타입의 문제들을 응답받아 생성한다.")
+    @DisplayName("다양한 문제 타입들을 응답받을 수 있다.")
+    void getAll() {
+        RestAssured.given()
+                .accept(ContentType.JSON)
+                .when()
+                .get("/questions")
+                .then()
+                .statusCode(200)
+                .log()
+                .all();
+    }
+
+    @Test
+    @DisplayName("다양한 타입의 문제들을 응답받아 생성할 수 있다.")
     void createQuestions() {
         CreateQuestionsRequest request = new CreateQuestionsRequest(List.of(
                 new ShortAnswerQuestionRequest("주관식 문제", "SHORT_ANSWER", "문제 정답"),
                 new MultipleChoiceQuestionRequest("객관식 문제", "MULTIPLE_CHOICE", new AdditionalData(
-                        List.of("보기1", "보기2", "보기3", "보기4")
+                        List.of("보기1", "보기2", "보기3", "보기4"), 1
                 ))
         ));
 

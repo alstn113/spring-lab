@@ -1,4 +1,7 @@
-###
+### 다양한 문제 타입 조회
+GET http://localhost:8080/questions
+
+### 다양한 문제 타입 생성
 POST http://localhost:8080/questions
 Content-Type: application/json
 
@@ -17,7 +20,8 @@ Content-Type: application/json
           "옵션 1",
           "옵션 2",
           "옵션 3"
-        ]
+        ],
+        "correctOptionNumber": 1
       }
     }
   ]
