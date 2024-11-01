@@ -1,0 +1,24 @@
+###
+POST http://localhost:8080/questions
+Content-Type: application/json
+
+{
+  "questions": [
+    {
+      "questionText": "afb",
+      "questionType": "SHORT_ANSWER",
+      "correctAnswer": "asdf"
+    },
+    {
+      "questionText": "객관식",
+      "questionType": "MULTIPLE_CHOICE",
+      "additionalData": {
+        "options": [
+          "옵션 1",
+          "옵션 2",
+          "옵션 3"
+        ]
+      }
+    }
+  ]
+}
