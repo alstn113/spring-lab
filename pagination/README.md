@@ -32,3 +32,12 @@ join fetch를 사용하지 않고, batch size를 적용하면 limit이 작동하
 comment를 fetch join 적용하면 106ms, 적용하지 않으면 32ms가 걸린다. 일단 batch size만 하는게 좋은 것 같다.
 
 ## no offset 방식
+
+cursor 방식은 이전 페이지의 마지막 데이터를 기준으로 다음 데이터를 가져온다.
+offset 방식과 달리 해당 위치까지 모든 데이터를 읽지 않아도 되기 때문에 성능이 좋다.
+
+## 참고
+
+페이지네이션 사용 시 fetch join을 먼저하면 성능이 안 좋을 수 있다.
+먼저 id를 모두 가져오고 fetch join하는 것이 좋다. 
+https://nobelbill.tistory.com/m/entry/JPA-fetch-join-사용시-pagination-적용-subquery-예제
