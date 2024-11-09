@@ -20,3 +20,13 @@ Spring Boot 3.0부터는 Hibernate 6.1을 사용하는데 Hibernate 6.0부터는
 OneToMany 관계에서 Fetch Join과 Pagination API를 동시에 사용하면 OutOfMemoryError가 발생할 수 있다. 이는 중복된 데이터를 메모리에 가져와서 처리하기 때문이다. 테스트 코드를
 참고해보자. 이 문제를 해결하기 위해서 Fetch Join 대신 default batch fetch size를 사용하거나 @BatchSize를 사용하면 된다. 이 경우 한 번 요청하면 배치 사이즈만큼 데이터를
 가져온다.
+
+## 참고
+
+OneToMany 단방향도 joinColumn을 사용하면 중간 테이블 없이 관계를 맺을 수 있다. 이 경우 mappedBy를 사용하지 않는다.
+
+```java
+@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+@JoinColumn(name = "article_id")
+private final List<Image> images = new ArrayList<>();
+```
