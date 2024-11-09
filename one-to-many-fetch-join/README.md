@@ -23,10 +23,13 @@ OneToMany 관계에서 Fetch Join과 Pagination API를 동시에 사용하면 Ou
 
 ## 참고
 
-OneToMany 단방향도 joinColumn을 사용하면 중간 테이블 없이 관계를 맺을 수 있다. 이 경우 mappedBy를 사용하지 않는다.
+1. OneToMany 단방향도 joinColumn을 사용하면 중간 테이블 없이 관계를 맺을 수 있다. 이 경우 mappedBy를 사용하지 않는다.
 
 ```java
 @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 @JoinColumn(name = "article_id")
 private final List<Image> images = new ArrayList<>();
 ```
+
+2. 양방향 매핑에서 양쪽 모두 테이블에 접근 가능하기 때문에 mappedBy를 사용해야 한다. mappedBy를 사용하지 않으면 중복된 테이블이 생성된다.
+mappedBy는 연관관계의 주인이 아닌 쪽에 사용한다. mappedBy를 사용하면 연관관계의 주인이 아닌 쪽은 읽기만 가능하다.
