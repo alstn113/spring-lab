@@ -1,0 +1,92 @@
+package com.example.security;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+
+import com.example.security.app.application.request.LoginRequest;
+import com.example.security.app.application.request.RegisterRequest;
+import io.restassured.RestAssured;
+import io.restassured.http.Cookie;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.MediaType;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class ApplicationTests {
+
+    private static final String EMAIL = "email@gmail.com";
+    private static final String PASSWORD = "abc123";
+
+    @LocalServerPort
+    private int port;
+
+    @BeforeEach
+    void setUp() {
+        RestAssured.port = port;
+
+        given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new RegisterRequest(EMAIL, PASSWORD))
+                .post("/register");
+    }
+
+    @Test
+    void testPublicEndpoint() {
+        given().log().all()
+                .get("/public")
+                .then().log().all()
+                .statusCode(200)
+                .body(equalTo("Test endpoint is working!"));
+    }
+
+    @Test
+    void testPrivateEndpoint() {
+        Cookie cookie = given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new LoginRequest(EMAIL, PASSWORD))
+                .post("/login")
+                .getDetailedCookie("access_token");
+
+        given().log().all()
+                .cookie(cookie)
+                .get("/private")
+                .then().log().all()
+                .statusCode(200)
+                .body(equalTo("Hello! you are 1"));
+    }
+
+    @Test
+    void testPrivateEndpointWithNoCookie() {
+        given().log().all()
+                .get("/private")
+                .then().log().all()
+                .statusCode(401);
+    }
+
+    @Test
+    void testPrivateEndpointWithInvalidToken() {
+        given().log().all()
+                .cookie("access_token", "invalid_token")
+                .get("/private")
+                .then().log().all()
+                .statusCode(401);
+    }
+
+    @Test
+    void testPrivateEndpoint2() {
+        Cookie cookie = given().log().all()
+                .contentType("application/json")
+                .body(new LoginRequest(EMAIL, PASSWORD))
+                .post("/login")
+                .getDetailedCookie("access_token");
+
+        given().log().all()
+                .cookie(cookie)
+                .get("/private/2")
+                .then().log().all()
+                .statusCode(200)
+                .body(equalTo("Hello! you are 1"));
+    }
+}
