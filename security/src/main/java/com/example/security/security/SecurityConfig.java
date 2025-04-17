@@ -13,6 +13,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 @Configuration
 @RequiredArgsConstructor
@@ -47,9 +48,14 @@ public class SecurityConfig {
                 .build();
     }
 
+    // spring web 의 DelegateFilterProxy 를 대신하는 설정
+    // Servlet Container 는 Bean Filter 를 알지 못하므로 FilterRegistrationBean 을 사용하여 등록
+    // DelegatingFilterProxy 는 Spring Context 이후 요청이 발생할 때 Lazy Loading 하여 Bean 을 가져옴
     @Bean
     public FilterRegistrationBean<Filter> securityFilter(Filter securityFilterChain) {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
+        DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy("securityFilterChain");
+        registration.setFilter(delegatingFilterProxy);
         registration.setFilter(securityFilterChain);
         registration.setOrder(1);
         registration.addUrlPatterns("/*");
