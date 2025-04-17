@@ -31,7 +31,7 @@ public class HttpSecurity {
     }
 
     public HttpSecurity exceptionHandling(Consumer<ExceptionHandlingConfigurer> configurer) {
-        ExceptionHandlingConfigurer config = new ExceptionHandlingConfigurer();
+        ExceptionHandlingConfigurer config = new ExceptionHandlingConfigurer(entryPoint, deniedHandler);
         configurer.accept(config);
 
         if (config.entryPoint != null) {
@@ -54,23 +54,33 @@ public class HttpSecurity {
 
     public Filter build() {
         AuthorizationFilter authorizationFilter = new AuthorizationFilter(entryPoint, deniedHandler);
+        ExceptionTranslationFilter exceptionFilter = new ExceptionTranslationFilter(entryPoint, deniedHandler);
 
         List<SecurityFilterChain> filterChains = accessRules.stream()
                 .map(rule -> {
                     List<Filter> filters = new ArrayList<>(preAuthenticationFilters);
+
+                    // 모든 요청에 대해서 authorizationFilter 를 추가하고, HttpSecurity 에서 AuthorizationManager 를 구현한 것들을 추가
                     if (!rule.permit()) {
                         filters.add(authorizationFilter);
                     }
+                    filters.add(exceptionFilter);
+
                     return new SecurityFilterChain(rule.matcher(), filters);
                 })
                 .toList();
 
-        return new FilterChainProxy(authorizationFilter, filterChains);
+        return new FilterChainProxy(filterChains);
     }
 
     public static class ExceptionHandlingConfigurer {
         private AuthenticationEntryPoint entryPoint;
         private AccessDeniedHandler deniedHandler;
+
+        public ExceptionHandlingConfigurer(AuthenticationEntryPoint entryPoint, AccessDeniedHandler deniedHandler) {
+            this.entryPoint = entryPoint;
+            this.deniedHandler = deniedHandler;
+        }
 
         public ExceptionHandlingConfigurer authenticationEntryPoint(AuthenticationEntryPoint entryPoint) {
             this.entryPoint = entryPoint;
