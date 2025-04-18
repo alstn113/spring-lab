@@ -3,12 +3,15 @@ package com.example.security;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
+import com.example.security.app.application.AuthService;
 import com.example.security.app.application.request.LoginRequest;
 import com.example.security.app.application.request.RegisterRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.Cookie;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
@@ -25,11 +28,11 @@ class ApplicationTests {
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
+    }
 
-        given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new RegisterRequest(USERNAME, PASSWORD))
-                .post("/register");
+    @BeforeAll
+    static void init(@Autowired AuthService authService) {
+        authService.register(new RegisterRequest(USERNAME, PASSWORD));
     }
 
     @Test

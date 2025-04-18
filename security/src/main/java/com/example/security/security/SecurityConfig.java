@@ -33,7 +33,8 @@ public class SecurityConfig {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(
                 tokenProvider,
                 tokenResolver,
-                authService
+                authService,
+                authenticationEntryPoint
         );
 
         return http

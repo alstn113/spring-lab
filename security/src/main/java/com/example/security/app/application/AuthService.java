@@ -22,7 +22,7 @@ public class AuthService {
     @Transactional
     public void register(RegisterRequest request) {
         if (memberRepository.existsByUsername(request.username())) {
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+            throw new IllegalArgumentException("이미 존재하는 사용자 이름입니다.");
         }
 
         String encodedPassword = passwordEncoder.encode(request.password());
