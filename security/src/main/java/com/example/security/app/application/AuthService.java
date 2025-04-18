@@ -6,6 +6,7 @@ import com.example.security.app.application.response.MemberInfoResponse;
 import com.example.security.app.application.response.TokenResponse;
 import com.example.security.app.domain.Member;
 import com.example.security.app.domain.MemberRepository;
+import com.example.security.app.domain.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,19 +21,19 @@ public class AuthService {
 
     @Transactional
     public void register(RegisterRequest request) {
-        if (memberRepository.existsByEmail(request.email())) {
+        if (memberRepository.existsByUsername(request.username())) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
         String encodedPassword = passwordEncoder.encode(request.password());
-        Member member = new Member(request.email(), encodedPassword);
+        Member member = new Member(request.username(), encodedPassword, Role.MEMBER);
 
         memberRepository.save(member);
     }
 
     @Transactional
     public TokenResponse login(LoginRequest request) {
-        Member member = memberRepository.findByEmail(request.email())
+        Member member = memberRepository.findByUsername(request.username())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
 
         if (!passwordEncoder.matches(request.password(), member.getPassword())) {
@@ -49,6 +50,6 @@ public class AuthService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. 사용자 식별자: %d".formatted(memberId)));
 
-        return new MemberInfoResponse(member.getId(), member.getEmail());
+        return new MemberInfoResponse(member.getId(), member.getUsername(), member.getRole());
     }
 }

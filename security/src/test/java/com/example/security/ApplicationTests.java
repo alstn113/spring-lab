@@ -16,8 +16,8 @@ import org.springframework.http.MediaType;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ApplicationTests {
 
-    private static final String EMAIL = "email@gmail.com";
-    private static final String PASSWORD = "abc123";
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
 
     @LocalServerPort
     private int port;
@@ -28,7 +28,7 @@ class ApplicationTests {
 
         given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new RegisterRequest(EMAIL, PASSWORD))
+                .body(new RegisterRequest(USERNAME, PASSWORD))
                 .post("/register");
     }
 
@@ -45,7 +45,7 @@ class ApplicationTests {
     void testPrivateEndpoint() {
         Cookie cookie = given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new LoginRequest(EMAIL, PASSWORD))
+                .body(new LoginRequest(USERNAME, PASSWORD))
                 .post("/login")
                 .getDetailedCookie("access_token");
 
@@ -78,7 +78,7 @@ class ApplicationTests {
     void testPrivateEndpoint2() {
         Cookie cookie = given().log().all()
                 .contentType("application/json")
-                .body(new LoginRequest(EMAIL, PASSWORD))
+                .body(new LoginRequest(USERNAME, PASSWORD))
                 .post("/login")
                 .getDetailedCookie("access_token");
 

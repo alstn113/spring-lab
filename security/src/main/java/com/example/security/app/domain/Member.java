@@ -2,6 +2,8 @@ package com.example.security.app.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,18 +20,23 @@ public class Member {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String email;
+    private String username;
 
     @Column(nullable = false)
     private String password;
 
-    public Member(String email, String password) {
-        this(null, email, password);
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public Member(String username, String password, Role role) {
+        this(null, username, password, role);
     }
 
-    public Member(Long id, String email, String password) {
+    public Member(Long id, String username, String password, Role role) {
         this.id = id;
-        this.email = email;
+        this.username = username;
         this.password = password;
+        this.role = role;
     }
 }
