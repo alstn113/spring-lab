@@ -38,6 +38,7 @@ public class SecurityConfig {
         );
 
         return http
+                .addFilterBefore(jwtAuthenticationFilter)
                 .exceptionHandling(it -> it
                         .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler)
@@ -48,7 +49,6 @@ public class SecurityConfig {
                         .requestMatchers("/private/member/**").hasAuthority("MEMBER")
                         .requestMatchers("/private/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
-                .addFilterBefore(jwtAuthenticationFilter)
                 .build();
     }
 
