@@ -43,8 +43,10 @@ public class SecurityConfig {
                         .accessDeniedHandler(accessDeniedHandler)
                 )
                 .authorizeHttpRequests(it -> it
-                        .requestMatchers("/login", "/register", "/public/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/private/**").authenticated()
+                        .requestMatchers("/login", "/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
+                        .requestMatchers("/private/member/**").hasAuthority("MEMBER")
+                        .requestMatchers("/private/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter)
                 .build();
@@ -52,8 +54,8 @@ public class SecurityConfig {
 
     @Bean
     public DelegatingFilterProxyRegistrationBean securityFilterChainRegistration() {
-        DelegatingFilterProxyRegistrationBean registration = new DelegatingFilterProxyRegistrationBean(
-                SECURITY_FILTER_CHAIN_BEAN_NAME);
+        DelegatingFilterProxyRegistrationBean registration =
+                new DelegatingFilterProxyRegistrationBean(SECURITY_FILTER_CHAIN_BEAN_NAME);
         registration.setOrder(1);
         registration.addUrlPatterns("/*");
         return registration;

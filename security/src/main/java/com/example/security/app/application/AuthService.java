@@ -26,7 +26,7 @@ public class AuthService {
         }
 
         String encodedPassword = passwordEncoder.encode(request.password());
-        Member member = new Member(request.username(), encodedPassword, Role.MEMBER);
+        Member member = new Member(request.username(), encodedPassword, Role.valueOf(request.role()));
 
         memberRepository.save(member);
     }
