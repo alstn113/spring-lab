@@ -1,8 +1,6 @@
 package com.example.security.security.exception;
 
-import java.nio.file.AccessDeniedException;
-
-public class AuthorizationDeniedException extends AccessDeniedException {
+public class AuthorizationDeniedException extends RuntimeException {
 
     public AuthorizationDeniedException(String message) {
         super(message);
