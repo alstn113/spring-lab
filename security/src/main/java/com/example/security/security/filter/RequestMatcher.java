@@ -16,7 +16,6 @@ public class RequestMatcher {
         boolean pathMatches = pathMatches(request.getRequestURI());
 
         if (method == null) {
-            System.out.println("AAA");
             return pathMatches;
         }
 

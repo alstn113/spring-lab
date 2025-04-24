@@ -38,25 +38,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        Optional<String> tokenOpt = tokenResolver.extractAccessToken(request);
-        if (tokenOpt.isPresent()) {
-            try {
-                Long memberId = tokenProvider.getMemberId(tokenOpt.get());
-                MemberInfoResponse memberInfo = authService.getMemberInfo(memberId);
-                Authentication authentication = new JwtAuthentication(
-                        memberInfo.memberId(),
-                        mapToAuthorities(memberInfo.role())
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (Exception e) {
-                SecurityContextHolder.clearContext();
-                authenticationEntryPoint.commence(request, response, new AuthenticationException("유효하지 않은 토큰입니다."));
+        try {
+            Authentication authentication = attemptAuthentication(request);
+            if (authentication == null) {
+                filterChain.doFilter(request, response);
                 return;
             }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
+        } catch (AuthenticationException e) {
+            SecurityContextHolder.clearContext();
+            authenticationEntryPoint.commence(request, response, new AuthenticationException("유효하지 않은 토큰입니다."));
+        }
+    }
+
+    private Authentication attemptAuthentication(HttpServletRequest request) {
+        Optional<String> tokenOpt = tokenResolver.extractAccessToken(request);
+        if (tokenOpt.isEmpty()) {
+            return null;
         }
 
-        filterChain.doFilter(request, response);
+        Long memberId = tokenProvider.getMemberId(tokenOpt.get());
+        MemberInfoResponse memberInfo = authService.getMemberInfo(memberId);
+
+        return new JwtAuthentication(memberInfo.memberId(), mapToAuthorities(memberInfo.role()));
     }
 
     private Collection<GrantedAuthority> mapToAuthorities(Role... roles) {

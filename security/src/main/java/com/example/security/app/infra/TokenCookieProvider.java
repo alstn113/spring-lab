@@ -19,7 +19,6 @@ public class TokenCookieProvider implements CookieProvider {
                 .path(properties.path())
                 .maxAge(properties.maxAge())
                 .build();
-
     }
 
     public ResponseCookie createExpiredTokenCookie() {

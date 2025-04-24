@@ -5,6 +5,4 @@ public interface TokenProvider {
     String generateToken(Long memberId);
 
     Long getMemberId(String token);
-
-    boolean validateToken(String token);
 }

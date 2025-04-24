@@ -1,6 +1,7 @@
 package com.example.security.app.infra;
 
 import com.example.security.app.application.TokenProvider;
+import com.example.security.security.exception.AuthenticationException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -41,19 +42,9 @@ public class JwtTokenProvider implements TokenProvider {
         return Long.valueOf(claims.getSubject());
     }
 
-    public boolean validateToken(String token) {
-        try {
-            getClaimsJws(token);
-
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
-    }
-
     private Claims toClaims(String token) {
         if (token == null || token.isBlank()) {
-            throw new IllegalArgumentException("토큰은 비어있을 수 없습니다.");
+            throw new AuthenticationException("토큰은 비어있을 수 없습니다.");
         }
 
         try {
@@ -61,9 +52,9 @@ public class JwtTokenProvider implements TokenProvider {
 
             return claimsJws.getPayload();
         } catch (ExpiredJwtException e) {
-            throw new IllegalArgumentException("만료된 토큰입니다.", e);
+            throw new AuthenticationException("만료된 토큰입니다.", e);
         } catch (JwtException e) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.", e);
+            throw new AuthenticationException("유효하지 않은 토큰입니다.", e);
         }
     }
 
