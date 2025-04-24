@@ -23,7 +23,6 @@ public class AuthorityAuthorizationManager implements AuthorizationManager {
     public AuthorizationDecision authorize(Supplier<Authentication> authentication) {
         boolean isGranted = isGranted(authentication.get(), authorities);
 
-        // 승인 여부와 필요한 권한 목록을 전달
         return new AuthorityAuthorizationDecision(isGranted, createAuthorities(authorities));
     }
 

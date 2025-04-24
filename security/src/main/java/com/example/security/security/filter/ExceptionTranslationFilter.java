@@ -2,10 +2,10 @@ package com.example.security.security.filter;
 
 import com.example.security.security.context.SecurityContext;
 import com.example.security.security.context.SecurityContextHolder;
-import com.example.security.security.exception.AccessDeniedException;
 import com.example.security.security.exception.AccessDeniedHandler;
 import com.example.security.security.exception.AuthenticationEntryPoint;
 import com.example.security.security.exception.AuthenticationException;
+import com.example.security.security.exception.AuthorizationDeniedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -41,7 +41,7 @@ public class ExceptionTranslationFilter extends GenericFilterBean {
             filterChain.doFilter(request, response);
         } catch (AuthenticationException e) {
             authenticationEntryPoint.commence(request, response, e);
-        } catch (AccessDeniedException e) {
+        } catch (AuthorizationDeniedException e) {
             if (isAnonymous()) {
                 authenticationEntryPoint.commence(request, response, new AuthenticationException("인증되지 않은 사용자입니다."));
             } else {

@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (AuthenticationException e) {
             SecurityContextHolder.clearContext();
-            authenticationEntryPoint.commence(request, response, new AuthenticationException("유효하지 않은 토큰입니다."));
+            authenticationEntryPoint.commence(request, response, e);
         }
     }
 

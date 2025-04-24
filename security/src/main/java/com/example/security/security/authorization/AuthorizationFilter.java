@@ -2,7 +2,7 @@ package com.example.security.security.authorization;
 
 import com.example.security.security.context.Authentication;
 import com.example.security.security.context.SecurityContextHolder;
-import com.example.security.security.exception.AccessDeniedException;
+import com.example.security.security.exception.AuthorizationDeniedException;
 import com.example.security.security.exception.AccessDeniedHandler;
 import com.example.security.security.exception.AuthenticationEntryPoint;
 import jakarta.servlet.FilterChain;
@@ -34,7 +34,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         AuthorizationResult result = authorizationManager.authorize(() -> authentication);
 
         if (result != null && !result.isGranted()) {
-            throw new AccessDeniedException("Access Denied");
+            throw new AuthorizationDeniedException("Access Denied");
         }
 
         filterChain.doFilter(request, response);
