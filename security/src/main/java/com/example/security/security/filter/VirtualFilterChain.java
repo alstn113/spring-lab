@@ -21,11 +21,12 @@ public class VirtualFilterChain implements FilterChain {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException {
-        if (currentPosition < filters.size()) {
-            Filter nextFilter = filters.get(currentPosition++);
-            nextFilter.doFilter(request, response, this);
-        } else {
+        if (this.currentPosition == filters.size()) {
             originalChain.doFilter(request, response);
+            return;
         }
+        this.currentPosition++;
+        Filter nextFilter = filters.get(currentPosition - 1);
+        nextFilter.doFilter(request, response, this);
     }
 }
