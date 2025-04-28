@@ -6,7 +6,7 @@ import com.example.security.security.authentication.JwtAuthenticationFilter;
 import com.example.security.security.authentication.TokenResolver;
 import com.example.security.security.exception.AccessDeniedHandler;
 import com.example.security.security.exception.AuthenticationEntryPoint;
-import com.example.security.security.filter.HttpSecurity;
+import com.example.security.security.dsl.HttpSecurity;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;

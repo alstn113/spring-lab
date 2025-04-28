@@ -1,8 +1,11 @@
-package com.example.security.security.filter;
+package com.example.security.security.dsl;
 
 import com.example.security.security.authorization.AuthorizationFilter;
 import com.example.security.security.exception.AccessDeniedHandler;
 import com.example.security.security.exception.AuthenticationEntryPoint;
+import com.example.security.security.filter.ExceptionTranslationFilter;
+import com.example.security.security.filter.FilterChainProxy;
+import com.example.security.security.filter.SecurityFilterChain;
 import jakarta.servlet.Filter;
 import java.util.ArrayList;
 import java.util.List;

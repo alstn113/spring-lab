@@ -1,8 +1,9 @@
-package com.example.security.security.filter;
+package com.example.security.security.dsl;
 
 import com.example.security.security.authorization.AuthorityAuthorizationManager;
 import com.example.security.security.authorization.AuthorizationDecision;
 import com.example.security.security.authorization.AuthorizationManager;
+import com.example.security.security.filter.RequestMatcher;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpMethod;
