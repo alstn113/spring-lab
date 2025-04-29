@@ -11,31 +11,36 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping("/public")
-    public String test(@AuthenticationPrincipal JwtAuthentication authentication) {
+    public String publicEndpoint() {
+        return "모두 접근 가능";
+    }
+
+    @GetMapping("/api/posts")
+    public String getPosts(@AuthenticationPrincipal JwtAuthentication authentication) {
         if (authentication == null) {
-            return "Public endpoint.";
+            return "인증되지 않은 사용자: 게시물 조회";
         }
-        return "Hello #" + authentication.principal();
+        return "인증된 사용자: 게시물 조회 #" + authentication.principal();
     }
 
-    @PostMapping("/public")
-    public String testPost(@AuthenticationPrincipal JwtAuthentication authentication) {
-        return "Hello #" + authentication.principal();
+    @PostMapping("/api/posts")
+    public String createPost(@AuthenticationPrincipal JwtAuthentication authentication) {
+        return "인증된 사용자: 게시물 생성 #" + authentication.principal();
     }
 
-    @GetMapping("/private/member")
+    @GetMapping("/api/private/member")
     public String privateMember(@AuthenticationPrincipal JwtAuthentication authentication) {
-        return "Member #" + authentication.principal();
+        return "인증된 사용자 #" + authentication.principal();
     }
 
-    @GetMapping("/private/member/holder")
+    @GetMapping("/api/private/member/holder")
     public String privateMemberHolder() {
         JwtAuthentication authentication = (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
-        return "Member #" + authentication.principal();
+        return "인증된 사용자 #" + authentication.principal();
     }
 
-    @GetMapping("/private/admin")
+    @GetMapping("/api/private/admin")
     public String privateAdmin(@AuthenticationPrincipal JwtAuthentication authentication) {
-        return "Admin #" + authentication.principal();
+        return "인증된 관리자 #" + authentication.principal();
     }
 }

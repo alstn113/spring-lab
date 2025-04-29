@@ -92,7 +92,7 @@ public class AuthorizeHttpRequestsConfigurer {
         }
 
         public AuthorizationManagerRequestMatcherRegistry hasAuthority(String authority) {
-            return access(new AuthorityAuthorizationManager(authority));
+            return access(AuthorityAuthorizationManager.hasAuthority(authority));
         }
 
         public AuthorizationManagerRequestMatcherRegistry access(AuthorizationManager manager) {

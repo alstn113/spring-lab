@@ -37,16 +37,16 @@ public class SecurityConfig {
         );
 
         return http
-                .addFilter(jwtAuthenticationFilter)
+                .securityMatchers("/api/**")
+                .addFilterBefore(jwtAuthenticationFilter)
                 .exceptionHandling(it -> it
                         .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler)
                 )
                 .authorizeHttpRequests(it -> it
-                        .requestMatchers("/login", "/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
-                        .requestMatchers("/private/member/**").hasAuthority("MEMBER")
-                        .requestMatchers("/private/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
+                        .requestMatchers("/api/private/member/**").hasAuthority("MEMBER")
+                        .requestMatchers("/api/private/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .build();
     }

@@ -8,19 +8,32 @@ import jakarta.servlet.Filter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HttpSecurity {
 
     private final List<Filter> filters;
+    private RequestMatcher requestMatcher;
     private final ExceptionHandlingConfigurer exceptionHandlingConfigurer;
     private final AuthorizeHttpRequestsConfigurer authorizeHttpRequestsConfigurer;
 
     public HttpSecurity(AuthenticationEntryPoint entryPoint, AccessDeniedHandler deniedHandler) {
         this.filters = new ArrayList<>();
+        this.requestMatcher = RequestMatcher.ANY_REQUEST;
         this.exceptionHandlingConfigurer = new ExceptionHandlingConfigurer(entryPoint, deniedHandler);
         this.authorizeHttpRequestsConfigurer = new AuthorizeHttpRequestsConfigurer();
+    }
+
+    public HttpSecurity securityMatchers(String pattern) {
+        this.requestMatcher = new RequestMatcher(null, pattern);
+        return this;
+    }
+
+    public HttpSecurity securityMatchers(HttpMethod method, String pattern) {
+        this.requestMatcher = new RequestMatcher(method, pattern);
+        return this;
     }
 
     public HttpSecurity addFilterBefore(Filter filter) {
@@ -49,6 +62,6 @@ public class HttpSecurity {
         exceptionHandlingConfigurer.configure(this);
         authorizeHttpRequestsConfigurer.configure(this);
 
-        return new SecurityFilterChain(RequestMatcher.ANY_REQUEST, filters);
+        return new SecurityFilterChain(requestMatcher, filters);
     }
 }

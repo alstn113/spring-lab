@@ -8,7 +8,6 @@ import com.alstn113.security.app.application.request.LoginRequest;
 import com.alstn113.security.app.application.request.RegisterRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.Cookie;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 
+// 동일한 스레드의 인증 정보가 남아 있을 수 있기 때문에 매 테스트 메서드마다 컨텍스트를 초기화한다.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ApplicationTests {
 
     private static final String MEMBER_USERNAME = "member_username";
@@ -28,130 +30,143 @@ class ApplicationTests {
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private AuthService authService;
+
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
     }
 
-    @BeforeAll
-    static void init(@Autowired AuthService authService) {
+    @BeforeEach
+    void registerTestUsers() {
         authService.register(new RegisterRequest(MEMBER_USERNAME, MEMBER_PASSWORD, "MEMBER"));
         authService.register(new RegisterRequest(ADMIN_USERNAME, ADMIN_PASSWORD, "ADMIN"));
     }
 
     @Test
-    @DisplayName("'/public/**' GET 요청은 인증 없이 접근 가능하다.")
+    @DisplayName("'/public'은 securityFilterChain의 대상 경로가 아니므로 접근 가능하다.")
     void testPublicEndpoint() {
         given().log().all()
                 .get("/public")
                 .then().log().all()
                 .statusCode(200)
-                .body(equalTo("Public endpoint."));
+                .body(equalTo("모두 접근 가능"));
     }
 
     @Test
-    @DisplayName("'/public/**' GET 요청 시 인증된 경우 인증된 정보를 반환한다.")
-    void testPublicEndpointWithAuthentication() {
+    @DisplayName("'/api/posts'의 GET 요청은 인증 없이 접근 가능하다.")
+    void testGetPosts() {
+        given().log().all()
+                .get("/api/posts")
+                .then().log().all()
+                .statusCode(200)
+                .body(equalTo("인증되지 않은 사용자: 게시물 조회"));
+    }
+
+    @Test
+    @DisplayName("'/api/posts'의 GET 요청은 인증된 사용자도 접근 가능하다.")
+    void testGetPostsWithAuthentication() {
         Cookie cookie = getMemberAccessTokenCookie();
 
         given().log().all()
                 .cookie(cookie)
-                .get("/public")
+                .get("/api/posts")
                 .then().log().all()
                 .statusCode(200)
-                .body(equalTo("Hello #1"));
+                .body(equalTo("인증된 사용자: 게시물 조회 #1"));
     }
 
     @Test
-    @DisplayName("'/public/**' 은 POST 요청은 인증이 필요 하다.")
-    void testPublicPostEndpoint() {
+    @DisplayName("'/api/posts'의 POST 요청은 인증되지 않은 사용자의 경우 401을 반환한다.")
+    void testPostPostsWithoutAuthentication() {
         given().log().all()
-                .post("/public")
+                .post("/api/posts")
                 .then().log().all()
                 .statusCode(401);
     }
 
     @Test
-    @DisplayName("'/public/**' 은 POST 요청은 인증된 경우 성공한다.")
-    void testPublicPostEndpointWithAuthentication() {
+    @DisplayName("'/api/posts'의 POST 요청은 인증된 사용자만 접근 가능하다.")
+    void testPostPosts() {
         Cookie cookie = getMemberAccessTokenCookie();
 
         given().log().all()
                 .cookie(cookie)
-                .post("/public")
+                .post("/api/posts")
                 .then().log().all()
                 .statusCode(200)
-                .body(equalTo("Hello #1"));
+                .body(equalTo("인증된 사용자: 게시물 생성 #1"));
     }
 
     @Test
-    @DisplayName("'/private/member/**' 은 Member 권한을 가진 사람만 접근 가능하다.")
-    void testPrivateMemberEndpoint() {
-        Cookie cookie = getMemberAccessTokenCookie();
-
-        given().log().all()
-                .cookie(cookie)
-                .get("/private/member")
-                .then().log().all()
-                .statusCode(200)
-                .body(equalTo("Member #1"));
-    }
-
-    @Test
-    @DisplayName("'/private/member/**' 은 쿠키가 없을 경우(인증이 안된 경우) 401 예외를 반환한다.")
-    void testPrivateMemberEndpointWithoutCookie() {
-        given().log().all()
-                .get("/private/member")
-                .then().log().all()
-                .statusCode(401);
-    }
-
-    @Test
-    @DisplayName("'/private/member/**' 은 토큰이 유효하지 않은 경우 401 예외를 반환한다.")
-    void testPrivateMemberEndpointWithInvalidToken() {
+    @DisplayName("'/api/member', 인증이 필요한 요청에서 토큰이 유효하지 않은 경우, 401을 반환한다.")
+    void testPrivateMemberHolderWithInvalidToken() {
         given().log().all()
                 .cookie("access_token", "invalid_token")
-                .get("/private/member")
+                .get("/api/private/member")
                 .then().log().all()
                 .statusCode(401);
     }
 
     @Test
-    @DisplayName("'/private/member/holder' 은 SecurityContextHolder 에서 인증 정보를 가져온다")
-    void testPrivateMemberHolderEndpoint() {
+    @DisplayName("'/api/member', 인증이 필요한 요청에서 쿠키가 없는 경우(인증이 없는 경우), 401을 반환한다.")
+    void testPrivateMemberHolderWithoutAuthentication() {
+        given().log().all()
+                .get("/api/private/member")
+                .then().log().all()
+                .statusCode(401);
+    }
+
+    @Test
+    @DisplayName("'/api/private/member'는 MEMBER의 경우 접근 가능하다.")
+    void testPrivateMember() {
         Cookie cookie = getMemberAccessTokenCookie();
 
         given().log().all()
                 .cookie(cookie)
-                .get("/private/member/holder")
+                .get("/api/private/member")
                 .then().log().all()
                 .statusCode(200)
-                .body(equalTo("Member #1"));
+                .body(equalTo("인증된 사용자 #1"));
     }
 
     @Test
-    @DisplayName("'/private/admin/**' 은 ADMIN 권한을 가진 사람만 접근 가능하다.")
-    void testPrivateEndpoint2() {
+    @DisplayName("'/api/private/member'는 MEMBER가 아닌 경우, 403을 반환한다.")
+    void testPrivateMemberNotAuthorized() {
         Cookie cookie = getAdminAccessTokenCookie();
 
         given().log().all()
                 .cookie(cookie)
-                .get("/private/admin")
+                .get("/api/private/member")
                 .then().log().all()
-                .statusCode(200)
-                .body(equalTo("Admin #2"));
+                .statusCode(403);
     }
 
     @Test
-    @DisplayName("'/private/admin/**' 은 MEMBER 권한을 가진 사람은 접근 불가능, 403 예외를 반환한다.")
-    void testPrivateEndpointWithMember() {
+    @DisplayName("'/api/private/member/holder'는 MEMBER의 경우 접근 가능하다.")
+    void testPrivateMemberHolder() {
         Cookie cookie = getMemberAccessTokenCookie();
 
         given().log().all()
                 .cookie(cookie)
-                .get("/private/admin")
+                .get("/api/private/member/holder")
                 .then().log().all()
-                .statusCode(403);
+                .statusCode(200)
+                .body(equalTo("인증된 사용자 #1"));
+    }
+
+    @Test
+    @DisplayName("'/api/private/admin'는 ADMIN의 경우 접근 가능하다.")
+    void testPrivateAdmin() {
+        Cookie cookie = getAdminAccessTokenCookie();
+
+        given().log().all()
+                .cookie(cookie)
+                .get("/api/private/admin")
+                .then().log().all()
+                .statusCode(200)
+                .body(equalTo("인증된 관리자 #2"));
     }
 
     private Cookie getMemberAccessTokenCookie() {
