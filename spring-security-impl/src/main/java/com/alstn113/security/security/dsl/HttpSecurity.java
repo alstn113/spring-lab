@@ -1,5 +1,6 @@
 package com.alstn113.security.security.dsl;
 
+import com.alstn113.security.security.context.SecurityContextHolderFilter;
 import com.alstn113.security.security.exception.AccessDeniedHandler;
 import com.alstn113.security.security.exception.AuthenticationEntryPoint;
 import com.alstn113.security.security.filter.RequestMatcher;
@@ -21,6 +22,7 @@ public class HttpSecurity {
 
     public HttpSecurity(AuthenticationEntryPoint entryPoint, AccessDeniedHandler deniedHandler) {
         this.filters = new ArrayList<>();
+        this.filters.add(new SecurityContextHolderFilter());
         this.requestMatcher = RequestMatcher.ANY_REQUEST;
         this.exceptionHandlingConfigurer = new ExceptionHandlingConfigurer(entryPoint, deniedHandler);
         this.authorizeHttpRequestsConfigurer = new AuthorizeHttpRequestsConfigurer();

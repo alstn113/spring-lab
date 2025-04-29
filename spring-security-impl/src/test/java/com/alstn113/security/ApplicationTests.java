@@ -8,6 +8,7 @@ import com.alstn113.security.app.application.request.LoginRequest;
 import com.alstn113.security.app.application.request.RegisterRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.Cookie;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,11 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 
-// 동일한 스레드의 인증 정보가 남아 있을 수 있기 때문에 매 테스트 메서드마다 컨텍스트를 초기화한다.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ApplicationTests {
 
     private static final String MEMBER_USERNAME = "member_username";
@@ -30,16 +28,13 @@ class ApplicationTests {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private AuthService authService;
-
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
     }
 
-    @BeforeEach
-    void registerTestUsers() {
+    @BeforeAll
+    static void registerTestUsers(@Autowired AuthService authService) {
         authService.register(new RegisterRequest(MEMBER_USERNAME, MEMBER_PASSWORD, "MEMBER"));
         authService.register(new RegisterRequest(ADMIN_USERNAME, ADMIN_PASSWORD, "ADMIN"));
     }
