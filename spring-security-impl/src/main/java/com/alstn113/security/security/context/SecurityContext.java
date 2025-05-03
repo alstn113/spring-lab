@@ -9,11 +9,11 @@ public class SecurityContext {
 
     private Authentication authentication;
 
-    public SecurityContext(Authentication authentication) {
-        this.authentication = authentication;
-    }
-
     public static SecurityContext createEmptyContext() {
         return new SecurityContext(null);
+    }
+
+    public SecurityContext(Authentication authentication) {
+        this.authentication = authentication;
     }
 }

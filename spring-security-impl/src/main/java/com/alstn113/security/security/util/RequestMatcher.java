@@ -1,4 +1,4 @@
-package com.alstn113.security.security.filter;
+package com.alstn113.security.security.util;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

@@ -3,8 +3,8 @@ package com.alstn113.security.security.dsl;
 import com.alstn113.security.security.context.SecurityContextHolderFilter;
 import com.alstn113.security.security.exception.AccessDeniedHandler;
 import com.alstn113.security.security.exception.AuthenticationEntryPoint;
-import com.alstn113.security.security.filter.RequestMatcher;
 import com.alstn113.security.security.filter.SecurityFilterChain;
+import com.alstn113.security.security.util.RequestMatcher;
 import jakarta.servlet.Filter;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +28,12 @@ public class HttpSecurity {
         this.authorizeHttpRequestsConfigurer = new AuthorizeHttpRequestsConfigurer();
     }
 
-    public HttpSecurity securityMatchers(String pattern) {
+    public HttpSecurity securityMatcher(String pattern) {
         this.requestMatcher = new RequestMatcher(null, pattern);
         return this;
     }
 
-    public HttpSecurity securityMatchers(HttpMethod method, String pattern) {
+    public HttpSecurity securityMatcher(HttpMethod method, String pattern) {
         this.requestMatcher = new RequestMatcher(method, pattern);
         return this;
     }

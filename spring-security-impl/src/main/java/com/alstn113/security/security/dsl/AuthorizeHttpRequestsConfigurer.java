@@ -4,7 +4,8 @@ import com.alstn113.security.security.authorization.AuthorityAuthorizationManage
 import com.alstn113.security.security.authorization.AuthorizationDecision;
 import com.alstn113.security.security.authorization.AuthorizationFilter;
 import com.alstn113.security.security.authorization.AuthorizationManager;
-import com.alstn113.security.security.filter.RequestMatcher;
+import com.alstn113.security.security.authorization.RequestMatcherDelegatingAuthorizationManager;
+import com.alstn113.security.security.util.RequestMatcher;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.http.HttpMethod;
@@ -22,10 +23,10 @@ public class AuthorizeHttpRequestsConfigurer {
         this.registry = new AuthorizationManagerRequestMatcherRegistry();
     }
 
-    public void configure(HttpSecurity httpSecurity) {
-        AuthorizationManager authorizationManager = this.registry.authorizationManager();
-        AuthorizationFilter authorizationFilter = new AuthorizationFilter(authorizationManager);
-        httpSecurity.addFilter(authorizationFilter);
+    public void configure(HttpSecurity http) {
+        AuthorizationManager delegatingAuthorizationManager = this.registry.authorizationManager();
+        AuthorizationFilter authorizationFilter = new AuthorizationFilter(delegatingAuthorizationManager);
+        http.addFilter(authorizationFilter);
     }
 
     public AuthorizationManagerRequestMatcherRegistry getRegistry() {

@@ -10,7 +10,7 @@ public class AuthorizationDecision implements AuthorizationResult {
 
     @Override
     public boolean isGranted() {
-        return granted;
+        return this.granted;
     }
 
     @Override

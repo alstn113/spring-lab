@@ -12,25 +12,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DefaultAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
 
     private final ObjectMapper objectMapper;
 
     @Override
-    public void commence(
+    public void handle(
             HttpServletRequest request,
             HttpServletResponse response,
-            AuthenticationException authException
+            AuthorizationDeniedException exception
     ) throws IOException {
-        String message = authException.getMessage() == null ? "Unauthorized" : authException.getMessage();
+        String message = exception.getMessage() == null ? "Access Denied" : exception.getMessage();
         String body = objectMapper.writeValueAsString(
-                ProblemDetail.forStatusAndDetail(
-                        HttpStatus.UNAUTHORIZED,
-                        message
-                )
+                ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, message)
         );
 
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(body);

@@ -10,6 +10,6 @@ public interface AuthenticationEntryPoint {
     void commence(
             HttpServletRequest request,
             HttpServletResponse response,
-            AuthenticationException authException
+            AuthenticationException exception
     ) throws IOException, ServletException;
 }

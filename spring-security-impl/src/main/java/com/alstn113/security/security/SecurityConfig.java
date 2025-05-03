@@ -9,6 +9,8 @@ import com.alstn113.security.security.exception.AccessDeniedHandler;
 import com.alstn113.security.security.exception.AuthenticationEntryPoint;
 import com.alstn113.security.security.filter.FilterChainProxy;
 import com.alstn113.security.security.filter.SecurityFilterChain;
+import jakarta.servlet.DispatcherType;
+import java.util.EnumSet;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpMethod;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private static final String FILTER_CHAIN_PROXY_BEAN_NAME = "filterChainProxy";
 
     private final TokenProvider tokenProvider;
@@ -37,7 +40,7 @@ public class SecurityConfig {
         );
 
         return http
-                .securityMatchers("/api/**")
+                .securityMatcher("/api/**")
                 .addFilterBefore(jwtAuthenticationFilter)
                 .exceptionHandling(it -> it
                         .authenticationEntryPoint(authenticationEntryPoint)
@@ -62,6 +65,7 @@ public class SecurityConfig {
                 new DelegatingFilterProxyRegistrationBean(FILTER_CHAIN_PROXY_BEAN_NAME);
         registration.setOrder(1);
         registration.addUrlPatterns("/*");
+        registration.setDispatcherTypes(EnumSet.allOf(DispatcherType.class));
         return registration;
     }
 }

@@ -19,4 +19,3 @@ security:
       domain: localhost
       path: /
       max-age: 86400 # 1 day
-

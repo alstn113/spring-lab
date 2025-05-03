@@ -1,5 +1,6 @@
 package com.alstn113.security.security.filter;
 
+import com.alstn113.security.security.util.RequestMatcher;
 import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -9,11 +10,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityFilterChain {
 
-    private final RequestMatcher requestMatcher;
+    private final RequestMatcher matcher;
     private final List<Filter> filters;
 
     public boolean matches(HttpServletRequest request) {
-        return requestMatcher.matches(request);
+        return matcher.matches(request);
     }
 
     public List<Filter> getFilters() {

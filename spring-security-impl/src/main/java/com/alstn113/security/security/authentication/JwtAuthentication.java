@@ -22,13 +22,11 @@ public class JwtAuthentication implements Authentication {
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return authorities;
+        return new ArrayList<>(authorities);
     }
 
     @Override
     public String toString() {
-        return "JwtAuthentication{" +
-                "memberId=" + memberId +
-                '}';
+        return "%s: [ memberId= %s ]".formatted(getClass().getSimpleName(), memberId);
     }
 }

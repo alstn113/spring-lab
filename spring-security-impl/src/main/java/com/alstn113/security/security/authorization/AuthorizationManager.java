@@ -7,5 +7,5 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface AuthorizationManager {
 
-    AuthorizationDecision authorize(Supplier<Authentication> authentication, HttpServletRequest request);
+    AuthorizationResult authorize(Supplier<Authentication> authentication, HttpServletRequest request);
 }

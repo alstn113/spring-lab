@@ -2,7 +2,7 @@ package com.alstn113.security.security.dsl;
 
 import com.alstn113.security.security.exception.AccessDeniedHandler;
 import com.alstn113.security.security.exception.AuthenticationEntryPoint;
-import com.alstn113.security.security.filter.ExceptionTranslationFilter;
+import com.alstn113.security.security.exception.ExceptionTranslationFilter;
 
 public class ExceptionHandlingConfigurer {
 
@@ -17,12 +17,12 @@ public class ExceptionHandlingConfigurer {
         this.accessDeniedHandler = accessDeniedHandler;
     }
 
-    public void configure(HttpSecurity httpSecurity) {
+    public void configure(HttpSecurity http) {
         ExceptionTranslationFilter exceptionTranslationFilter = new ExceptionTranslationFilter(
                 authenticationEntryPoint,
                 accessDeniedHandler
         );
-        httpSecurity.addFilter(exceptionTranslationFilter);
+        http.addFilter(exceptionTranslationFilter);
     }
 
     public ExceptionHandlingConfigurer authenticationEntryPoint(

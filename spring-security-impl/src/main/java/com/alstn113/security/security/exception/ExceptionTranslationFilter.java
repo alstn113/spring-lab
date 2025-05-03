@@ -1,11 +1,7 @@
-package com.alstn113.security.security.filter;
+package com.alstn113.security.security.exception;
 
 import com.alstn113.security.security.context.SecurityContext;
 import com.alstn113.security.security.context.SecurityContextHolder;
-import com.alstn113.security.security.exception.AccessDeniedHandler;
-import com.alstn113.security.security.exception.AuthenticationEntryPoint;
-import com.alstn113.security.security.exception.AuthenticationException;
-import com.alstn113.security.security.exception.AuthorizationDeniedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -13,20 +9,14 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.filter.GenericFilterBean;
 
+@RequiredArgsConstructor
 public class ExceptionTranslationFilter extends GenericFilterBean {
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
-
-    public ExceptionTranslationFilter(
-            AuthenticationEntryPoint authenticationEntryPoint,
-            AccessDeniedHandler accessDeniedHandler
-    ) {
-        this.authenticationEntryPoint = authenticationEntryPoint;
-        this.accessDeniedHandler = accessDeniedHandler;
-    }
 
     @Override
     public void doFilter(

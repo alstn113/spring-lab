@@ -12,16 +12,16 @@ public class AuthorityAuthorizationManager implements AuthorizationManager {
 
     private final Set<String> authorities;
 
+    public static AuthorityAuthorizationManager hasAuthority(String authority) {
+        return new AuthorityAuthorizationManager(authority);
+    }
+
     public AuthorityAuthorizationManager(String... authorities) {
         this.authorities = Set.of(authorities);
     }
 
-    public static AuthorizationManager hasAuthority(String authority) {
-        return new AuthorityAuthorizationManager(authority);
-    }
-
     @Override
-    public AuthorizationDecision authorize(Supplier<Authentication> authentication, HttpServletRequest request) {
+    public AuthorizationResult authorize(Supplier<Authentication> authentication, HttpServletRequest request) {
         boolean isGranted = isGranted(authentication.get(), authorities);
 
         return new AuthorityAuthorizationDecision(isGranted, createAuthorities(authorities));

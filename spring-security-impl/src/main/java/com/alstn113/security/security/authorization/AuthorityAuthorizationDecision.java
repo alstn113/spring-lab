@@ -1,9 +1,7 @@
 package com.alstn113.security.security.authorization;
 
 import java.util.Collection;
-import lombok.Getter;
 
-@Getter
 public class AuthorityAuthorizationDecision extends AuthorizationDecision {
 
     private final Collection<GrantedAuthority> authorities;
@@ -15,9 +13,6 @@ public class AuthorityAuthorizationDecision extends AuthorizationDecision {
 
     @Override
     public String toString() {
-        return "AuthorityAuthorizationDecision{" +
-                "granted=" + isGranted() +
-                ", authorities=" + authorities +
-                '}';
+        return "%s: [ granted= %s, authorities= %s ]".formatted(getClass().getSimpleName(), isGranted(), authorities);
     }
 }

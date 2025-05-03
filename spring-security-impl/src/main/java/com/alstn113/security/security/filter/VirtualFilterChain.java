@@ -12,11 +12,12 @@ public class VirtualFilterChain implements FilterChain {
 
     private final List<Filter> filters;
     private final FilterChain originalChain;
-    private int currentPosition = 0;
+    private int currentPosition;
 
     public VirtualFilterChain(List<Filter> filters, FilterChain originalChain) {
         this.filters = filters;
         this.originalChain = originalChain;
+        this.currentPosition = 0;
     }
 
     @Override
