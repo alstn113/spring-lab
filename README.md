@@ -1,4 +1,4 @@
-# 대충 스프링 실험실 비슷한 것
+# 스프링 실험실
 
 - [Lock](./lock/README.md): 비관적 락과 낙관적 락에 대해 알아보자
 - [@Modifying](./modifying/README.md): @Modifying과 주의할 점을 알아보자
