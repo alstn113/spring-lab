@@ -1,0 +1,7 @@
+# application.yml
+
+logging:
+  level:
+    org.springframework.context: TRACE
+    org.springframework.cache.interceptor: TRACE
+    org.springframework.transaction.interceptor: TRACE
