@@ -1,0 +1,75 @@
+spring.profiles.active: local
+
+spring:
+  jpa:
+    open-in-view: false
+  redis:
+    host: localhost
+    port: 6379
+
+---
+spring.config.activate.on-profile: local
+
+auth:
+  access-token:
+    secret-key: access_token_secret_key_1234567890_abcdefghijklmnopqrstuvwxyz
+    expiration: 10m
+  refresh-token:
+    secret-key: refresh_token_secret_key_1234567890_abcdefghijklmnopqrstuvwxyz
+    expiration: 30d
+    overlap-period: 10s
+  refresh-token-cookie:
+    name: refresh_token
+    domain: localhost
+    path: /
+    expiration: ${auth.refresh-token.expiration}
+    http-only: true
+    secure: true
+    same-site: None
+
+web:
+  cors:
+    allowed-origins:
+      - "http://localhost:5173"
+    allowed-methods:
+      - "*"
+    allowed-headers:
+      - "*"
+    allow-credentials: true
+    max-age: 3600
+
+---
+spring.config.activate.on-profile: prod
+
+spring:
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+
+auth:
+  access-token:
+    secret-key: ${ACCESS_TOKEN_SECRET_KEY}
+    expiration: 10m
+  refresh-token:
+    secret-key: ${REFRESH_TOKEN_SECRET_KEY}
+    expiration: 30d
+    overlap-period: 10s
+  refresh-token-cookie:
+    name: refresh_token
+    domain: ${COOKIE_DOMAIN} # ex) .example.com
+    path: /
+    expiration: ${auth.refresh-token.expiration}
+    http-only: true
+    secure: true
+    same-site: Lax
+
+web:
+  cors:
+    allowed-origins:
+      - ${CLIENT_HOST}
+    allowed-methods:
+      - "*"
+    allowed-headers:
+      - "*"
+    allow-credentials: true
+    max-age: 3600
