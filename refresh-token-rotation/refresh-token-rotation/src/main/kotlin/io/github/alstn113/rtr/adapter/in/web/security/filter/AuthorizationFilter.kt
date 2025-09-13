@@ -7,7 +7,6 @@ import io.github.alstn113.rtr.adapter.`in`.web.security.AttributeNames
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.http.HttpMethod
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 
@@ -19,9 +18,6 @@ class AuthorizationFilter(
     private val pathMatcher = AntPathMatcher()
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
-        if (request.method == HttpMethod.OPTIONS.name()) {
-            return true
-        }
         return allowListPatterns.any { pattern -> pathMatcher.match(pattern, request.requestURI) }
     }
 

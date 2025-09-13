@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
@@ -27,9 +26,6 @@ class AuthenticationFilter(
     private val log: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
-        if (request.method == HttpMethod.OPTIONS.name()) {
-            return true
-        }
         return allowListPatterns.any { pattern -> pathMatcher.match(pattern, request.requestURI) }
     }
 
@@ -38,17 +34,14 @@ class AuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        val principal = try {
-            resolvePrincipal(request)
+        try {
+            val principal = resolvePrincipal(request)
+            request.setAttribute(AttributeNames.AUTHENTICATION_PRINCIPAL, principal)
+            filterChain.doFilter(request, response)
         } catch (e: TokenException) {
             log.warn("[TokenException] 유효하지 않은 토큰입니다. {}", e.message, e)
-
             writeErrorResponse(response, message = e.message ?: "유효하지 않은 토큰입니다.")
-            return
         }
-
-        request.setAttribute(AttributeNames.AUTHENTICATION_PRINCIPAL, principal)
-        filterChain.doFilter(request, response)
     }
 
     private fun resolvePrincipal(request: HttpServletRequest): AccountPrincipal {
@@ -69,5 +62,6 @@ class AuthenticationFilter(
         val errorResponse = ApiResponse.error(errorMessage = message)
         val body = objectMapper.writeValueAsString(errorResponse)
         response.writer.write(body)
+        response.flushBuffer()
     }
 }

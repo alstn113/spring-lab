@@ -52,7 +52,11 @@ export default function AuthDemo() {
       const res = await api.post(
         '/auth/change-password',
         changePasswordRequest,
-        { headers: { Authorization: `Bearer ${accessToken}` } }
+        {
+          headers: accessToken
+            ? { Authorization: `Bearer ${accessToken}` }
+            : {},
+        }
       );
       setAccessToken(null);
       setResponse(res.data);
@@ -79,7 +83,9 @@ export default function AuthDemo() {
         '/auth/logout',
         {},
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: accessToken
+            ? { Authorization: `Bearer ${accessToken}` }
+            : {},
         }
       );
       setResponse(res.data);
@@ -95,7 +101,9 @@ export default function AuthDemo() {
         '/auth/logout/all',
         {},
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: accessToken
+            ? { Authorization: `Bearer ${accessToken}` }
+            : {},
         }
       );
       setResponse(res.data);
@@ -119,7 +127,7 @@ export default function AuthDemo() {
   const testApi = async () => {
     try {
       const res = await api.get('/test', {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
       });
       setResponse(res.data);
     } catch (err) {
