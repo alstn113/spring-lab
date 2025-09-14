@@ -25,7 +25,7 @@ auth:
     expiration: ${auth.refresh-token.expiration}
     http-only: true
     secure: true
-    same-site: None
+    same-site: Lax
 
 web:
   cors:
