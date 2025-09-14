@@ -20,5 +20,5 @@
 - [pagination](./pagination/README.md): 페이지네이션의 문제 상황들과 해결 방법을 알아보자
 - [json-sub-type](./json-sub-type/README.md): SubType을 JSON으로 직렬화, 역직렬화하는 방법을 알아보자
 - [spring-security-impl](./spring-security-impl/README.md): Spring Security를 직접 구현해보자
-- [annotation](./anno/README.md): Spring Annotation에 대해서 알아보자
+- [annotation](./anno/README.md): Spring AOP Annotation에 대해서 알아보자
 - [refresh-token-rotation](./refresh-token-rotation/README.md): Refresh Token Rotation에 대해서 알아보자
