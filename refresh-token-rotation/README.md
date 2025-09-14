@@ -2,7 +2,7 @@
 
 ## 목록
 
-- [Spring Server](./refresh-token-rotation/): 인증을 테스트할 수 있는 서버입니다.
+- [Spring Kotlin Server](./refresh-token-rotation/): 인증을 테스트할 수 있는 서버입니다.
   - docker/compose.yml을 통해 Valkey(Redis)와 함께 실행할 수 있습니다.
 - [React Client](./rtr-web/): 인증을 테스트할 수 있는 웹입니다.
   - pnpm install && pnpm dev로 실행할 수 있습니다.
