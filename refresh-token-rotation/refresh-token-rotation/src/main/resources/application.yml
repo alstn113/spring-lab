@@ -30,11 +30,11 @@ auth:
 web:
   cors:
     allowed-origins:
-      - "http://localhost:5173"
+      - 'http://localhost:5173'
     allowed-methods:
-      - "*"
+      - '*'
     allowed-headers:
-      - "*"
+      - '*'
     allow-credentials: true
     max-age: 3600
 
@@ -61,6 +61,8 @@ auth:
     expiration: ${auth.refresh-token.expiration}
     http-only: true
     secure: true
+    # server: https://api.example.com, client: https://example.com 일 경우 Lax
+    # server: https://api-example.com, client: https://web-example.com 일 경우 None
     same-site: Lax
 
 web:
@@ -68,8 +70,8 @@ web:
     allowed-origins:
       - ${CLIENT_HOST}
     allowed-methods:
-      - "*"
+      - '*'
     allowed-headers:
-      - "*"
+      - '*'
     allow-credentials: true
     max-age: 3600
