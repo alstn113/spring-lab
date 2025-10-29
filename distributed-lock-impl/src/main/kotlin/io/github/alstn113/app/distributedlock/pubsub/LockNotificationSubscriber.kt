@@ -61,7 +61,7 @@ class LockNotificationSubscriber : MessageListener {
 
         val entry = registry[key]
         entry?.semaphore?.release()
-        log.info("락 해제 알림 수신: key={}, 남은 대기자={}", key, entry?.semaphore?.availablePermits() ?: 0)
+        log.info("락 해제 알림 수신: key={}, 남은 대기자={}", key, entry?.refCount ?: 0)
     }
 
     companion object {
