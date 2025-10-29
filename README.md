@@ -24,3 +24,4 @@
 - [spring-security-impl](./spring-security-impl/README.md): Spring Security를 직접 구현해보자
 - [annotation](./anno/README.md): Spring AOP Annotation에 대해서 알아보자
 - [refresh-token-rotation](./refresh-token-rotation/README.md): Refresh Token Rotation에 대해서 알아보자
+- [distributed-lock-impl](./distributed-lock-impl/README.md): Spin Lock과 Pub/Sub 방식을 구현하는 방식을 알아보자

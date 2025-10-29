@@ -1,0 +1,23 @@
+-- 반환값:
+--   1 -> 정상 해제 및 알림 발행
+--   0 -> 재진입 카운트 감소 (아직 락 유지)
+--  -1 -> unlock 불가 (다른 스레드가 락 소유 중)
+
+local lockKey = KEYS[1]
+local owner = ARGV[1]
+local notifyChannel = lockKey .. ':notify'
+
+local ownerExists = redis.call('hexists', lockKey, owner)
+if ownerExists == 0 then
+  return -1
+end
+
+local counter = redis.call('hincrby', lockKey, owner, -1)
+if counter > 0 then
+  return 0
+end
+
+redis.call('del', lockKey)
+redis.call('publish', notifyChannel, 'unlocked')
+
+return 1
