@@ -3,6 +3,8 @@ package io.github.alstn113.app.distributedlock.pubsub
 import org.slf4j.LoggerFactory
 import org.springframework.data.redis.connection.Message
 import org.springframework.data.redis.connection.MessageListener
+import org.springframework.data.redis.listener.ChannelTopic
+import org.springframework.data.redis.listener.RedisMessageListenerContainer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
@@ -10,7 +12,9 @@ import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.AtomicInteger
 
 @Component
-class LockNotificationSubscriber : MessageListener {
+class LockNotificationSubscriber(
+    private val container: RedisMessageListenerContainer,
+) : MessageListener {
 
     private val log = LoggerFactory.getLogger(javaClass)
     private val stringSerializer = StringRedisSerializer.UTF_8
@@ -23,9 +27,12 @@ class LockNotificationSubscriber : MessageListener {
 
 
     fun acquire(key: String): Semaphore {
+        val channel = ChannelTopic(key + NOTIFY_SUFFIX)
+
         val entry = registry.compute(key) { _, existing ->
             if (existing == null) {
-                log.info("새로운 LockWaitEntry 생성: key={}", key)
+                log.info("새로운 LockWaitEntry 생성 및 구독: key={}", key)
+                container.addMessageListener(this, channel)
                 LockWaitEntry(Semaphore(0))
             } else {
                 existing.refCount.incrementAndGet()
@@ -37,11 +44,14 @@ class LockNotificationSubscriber : MessageListener {
     }
 
     fun release(key: String) {
+        val channel = ChannelTopic(key + NOTIFY_SUFFIX)
+
         registry.computeIfPresent(key) { _, entry ->
             val remain = entry.refCount.decrementAndGet()
             log.info("LockWaitEntry 해제: key={}, 남은 refCount={}", key, remain)
             if (remain <= 0) {
-                log.info("LockWaitEntry 제거: key={}", key)
+                log.info("LockWaitEntry 제거 및 구독 해제: key={}", key)
+                container.removeMessageListener(this, channel)
                 null
             } else {
                 entry
@@ -66,6 +76,5 @@ class LockNotificationSubscriber : MessageListener {
 
     companion object {
         const val NOTIFY_SUFFIX = ":notify"
-        const val NOTIFY_PATTERN = "*$NOTIFY_SUFFIX"
     }
 }

@@ -23,38 +23,42 @@ class PubSubLock(
         val waitTimeMillis = waitTime.toMillis()
         val leaseTimeMillis = leaseTime.toMillis()
 
-        val result = redisTemplate.execute(
+        var ttl = redisTemplate.execute(
             tryAcquireScript,
             listOf(key),
             leaseTimeMillis.toString(),
             getLockOwnerId()
         )
 
-        if (result == -1L) {
+        if (ttl == -1L) {
             return true
         }
 
-        while (true) {
-            try {
-                val semaphore = subscriber.acquire(key)
+        var remainingTimeMillis = waitTimeMillis - (System.currentTimeMillis() - currentTimeMillis)
+        if (remainingTimeMillis <= 0) {
+            return false
+        }
 
-                var remainingTimeMillis = waitTimeMillis - (System.currentTimeMillis() - currentTimeMillis)
+        val semaphore = subscriber.acquire(key)
+
+        try {
+            // 락 해제 알림이 오고, 알림을 기다릴 수 있으므로 한 번 더 시도
+            ttl = redisTemplate.execute(
+                tryAcquireScript,
+                listOf(key),
+                leaseTimeMillis.toString(),
+                getLockOwnerId()
+            )
+
+            if (ttl == -1L) {
+                return true
+            }
+
+            while (true) {
+                remainingTimeMillis = waitTimeMillis - (System.currentTimeMillis() - currentTimeMillis)
                 if (remainingTimeMillis <= 0) {
                     return false
                 }
-
-                // 락 해제 알림이 오고, 알림을 기다릴 수 있으므로 한 번 더 시도
-                val retryResult = redisTemplate.execute(
-                    tryAcquireScript,
-                    listOf(key),
-                    leaseTimeMillis.toString(),
-                    getLockOwnerId()
-                )
-
-                if (retryResult == -1L) {
-                    return true
-                }
-                remainingTimeMillis = retryResult
 
                 // onMessage 에서 release 호출 시 semaphore 가 증가하면 스레드 중 하나만 획득에 성공
                 val notified = semaphore.tryAcquire(remainingTimeMillis, TimeUnit.MILLISECONDS)
@@ -72,12 +76,14 @@ class PubSubLock(
                 if (retry == -1L) {
                     return true
                 }
-            } catch (ie: InterruptedException) {
-                Thread.currentThread().interrupt()
-                return false
-            } finally {
-                subscriber.release(key)
+
+                // 성공 시에만 release 를 호출하므로 실패한 경우는 다음 알림을 기다린다.
             }
+        } catch (ie: InterruptedException) {
+            Thread.currentThread().interrupt()
+            return false
+        } finally {
+            subscriber.release(key)
         }
     }
 
