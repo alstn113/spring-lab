@@ -18,9 +18,9 @@ class SpinLock(
     override fun tryLock(key: String, waitTime: Duration, leaseTime: Duration): Boolean {
         val deadlineMillis = System.currentTimeMillis() + waitTime.toMillis()
 
-        var backOffMillis = 1L
+        var backOffMillis = BACKOFF_INITIAL_MILLIS
 
-        while(true) {
+        while (true) {
             if (isDeadlineExceeded(deadlineMillis)) {
                 return false
             }
@@ -37,7 +37,7 @@ class SpinLock(
                 return false
             }
 
-            backOffMillis = minOf(backOffMillis * 2, 128L)
+            backOffMillis = minOf(backOffMillis * 2, BACKOFF_MAX_MILLIS)
         }
     }
 
@@ -71,5 +71,7 @@ class SpinLock(
 
     companion object {
         private val INSTANCE_ID = UUID.randomUUID().toString()
+        private const val BACKOFF_INITIAL_MILLIS = 1L
+        private const val BACKOFF_MAX_MILLIS = 128L
     }
 }
