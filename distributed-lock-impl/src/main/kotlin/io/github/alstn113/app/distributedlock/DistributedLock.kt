@@ -14,8 +14,8 @@ fun DistributedLock.withLock(
     leaseTime: Duration,
     callback: () -> Unit,
 ) {
-    val locked = this.tryLock(key, waitTime, leaseTime)
-    if (!locked) {
+    val acquired = this.tryLock(key, waitTime, leaseTime)
+    if (!acquired) {
         throw IllegalStateException("Failed to acquire lock for key: $key")
     }
 
