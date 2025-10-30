@@ -4,15 +4,15 @@
 --  -1 -> unlock 불가 (다른 스레드가 락 소유 중)
 
 local lockKey = KEYS[1]
-local owner = ARGV[1]
+local lockOwnerId = ARGV[1]
 local notifyChannel = ARGV[2]
 
-local ownerExists = redis.call('hexists', lockKey, owner)
+local ownerExists = redis.call('hexists', lockKey, lockOwnerId)
 if ownerExists == 0 then
   return -1
 end
 
-local counter = redis.call('hincrby', lockKey, owner, -1)
+local counter = redis.call('hincrby', lockKey, lockOwnerId, -1)
 if counter > 0 then
   return 0
 end

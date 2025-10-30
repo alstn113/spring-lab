@@ -8,6 +8,7 @@ interface DistributedLock {
     fun unlock(key: String)
 }
 
+// 분산락을 사용할 수 있는 확장 함수
 fun DistributedLock.withLock(
     key: String,
     waitTime: Duration,
