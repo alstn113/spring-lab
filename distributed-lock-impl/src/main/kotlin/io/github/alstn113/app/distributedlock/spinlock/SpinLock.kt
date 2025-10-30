@@ -16,21 +16,17 @@ class SpinLock(
 ) : DistributedLock {
 
     override fun tryLock(key: String, waitTime: Duration, leaseTime: Duration): Boolean {
-        val currentTimeMillis = System.currentTimeMillis()
-        val waitTimeMillis = waitTime.toMillis()
-        val leaseTimeMillis = leaseTime.toMillis()
+        val deadlineMillis = System.currentTimeMillis() + waitTime.toMillis()
 
         var backOffMillis = 1L
 
-        while (System.currentTimeMillis() - currentTimeMillis < waitTimeMillis) {
-            val result = redisTemplate.execute(
-                tryAcquireScript,
-                listOf(key),
-                leaseTimeMillis.toString(),
-                getLockOwnerId(),
-            )
+        while(true) {
+            if (isDeadlineExceeded(deadlineMillis)) {
+                return false
+            }
 
-            if (result == -1L) {
+            val ttl = tryAcquire(key, leaseTime)
+            if (ttl == -1L) {
                 return true
             }
 
@@ -43,8 +39,6 @@ class SpinLock(
 
             backOffMillis = minOf(backOffMillis * 2, 128L)
         }
-
-        return false
     }
 
     override fun unlock(key: String) {
@@ -53,6 +47,21 @@ class SpinLock(
             listOf(key),
             getLockOwnerId(),
         )
+    }
+
+    private fun tryAcquire(key: String, leaseTime: Duration): Long {
+        val leaseTimeMillis = leaseTime.toMillis()
+
+        return redisTemplate.execute(
+            tryAcquireScript,
+            listOf(key),
+            leaseTimeMillis.toString(),
+            getLockOwnerId()
+        )
+    }
+
+    private fun isDeadlineExceeded(deadlineMillis: Long): Boolean {
+        return System.currentTimeMillis() > deadlineMillis
     }
 
     private fun getLockOwnerId(): String {
