@@ -12,7 +12,7 @@ import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.AtomicInteger
 
 @Component
-class LockNotificationSubscriber(
+class LockNotificationManager(
     private val container: RedisMessageListenerContainer,
 ) : MessageListener {
 
@@ -26,13 +26,12 @@ class LockNotificationSubscriber(
     )
 
 
-    fun acquire(key: String): Semaphore {
-        val channel = ChannelTopic(key + NOTIFY_SUFFIX)
-
+    fun subscribe(key: String): Semaphore {
+        var created = false
         val entry = registry.compute(key) { _, existing ->
             if (existing == null) {
                 log.info("새로운 LockWaitEntry 생성 및 구독: key={}", key)
-                container.addMessageListener(this, channel)
+                created = true
                 LockWaitEntry(Semaphore(0))
             } else {
                 existing.refCount.incrementAndGet()
@@ -40,18 +39,22 @@ class LockNotificationSubscriber(
                 existing
             }
         }!!
+
+        if (created) {
+            container.addMessageListener(this, ChannelTopic(key + NOTIFY_SUFFIX))
+        }
+
         return entry.semaphore
     }
 
-    fun release(key: String) {
-        val channel = ChannelTopic(key + NOTIFY_SUFFIX)
-
+    fun unsubscribe(key: String) {
         registry.computeIfPresent(key) { _, entry ->
             val remain = entry.refCount.decrementAndGet()
             log.info("LockWaitEntry 해제: key={}, 남은 refCount={}", key, remain)
+
             if (remain <= 0) {
                 log.info("LockWaitEntry 제거 및 구독 해제: key={}", key)
-                container.removeMessageListener(this, channel)
+                container.removeMessageListener(this, ChannelTopic(key + NOTIFY_SUFFIX))
                 null
             } else {
                 entry
@@ -64,13 +67,14 @@ class LockNotificationSubscriber(
         if (!channel.endsWith(NOTIFY_SUFFIX)) {
             return
         }
+
         val key = channel.removeSuffix(NOTIFY_SUFFIX)
         if (key.isBlank()) {
             return
         }
 
-        val entry = registry[key]
-        entry?.semaphore?.release()
+        val entry = registry[key] ?: return
+        entry.semaphore.release()
         log.info("락 해제 알림 수신: key={}, 남은 대기자={}", key, entry?.refCount ?: 0)
     }
 

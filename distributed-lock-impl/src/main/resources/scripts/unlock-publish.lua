@@ -5,7 +5,7 @@
 
 local lockKey = KEYS[1]
 local owner = ARGV[1]
-local notifyChannel = lockKey .. ':notify'
+local notifyChannel = ARGV[2]
 
 local ownerExists = redis.call('hexists', lockKey, owner)
 if ownerExists == 0 then
