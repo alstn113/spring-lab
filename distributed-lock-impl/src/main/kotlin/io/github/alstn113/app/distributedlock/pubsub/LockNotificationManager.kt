@@ -17,14 +17,13 @@ class LockNotificationManager(
 ) : MessageListener {
 
     private val log = LoggerFactory.getLogger(javaClass)
-    private val stringSerializer = StringRedisSerializer.UTF_8
+    private val serializer = StringRedisSerializer.UTF_8
     private val registry = ConcurrentHashMap<String, LockWaitEntry>()
 
     private data class LockWaitEntry(
         val semaphore: Semaphore,
-        val refCount: AtomicInteger = AtomicInteger(1),
+        val counter: AtomicInteger = AtomicInteger(1),
     )
-
 
     fun subscribe(key: String): Semaphore {
         var created = false
@@ -34,8 +33,8 @@ class LockNotificationManager(
                 created = true
                 LockWaitEntry(Semaphore(0))
             } else {
-                existing.refCount.incrementAndGet()
-                log.info("기존 LockWaitEntry 재사용: key={}, refCount={}", key, existing.refCount.get())
+                existing.counter.incrementAndGet()
+                log.info("기존 LockWaitEntry 재사용: key={}, refCount={}", key, existing.counter.get())
                 existing
             }
         }!!
@@ -49,7 +48,7 @@ class LockNotificationManager(
 
     fun unsubscribe(key: String) {
         registry.computeIfPresent(key) { _, entry ->
-            val remain = entry.refCount.decrementAndGet()
+            val remain = entry.counter.decrementAndGet()
             log.info("LockWaitEntry 해제: key={}, 남은 refCount={}", key, remain)
 
             if (remain <= 0) {
@@ -63,7 +62,7 @@ class LockNotificationManager(
     }
 
     override fun onMessage(message: Message, pattern: ByteArray?) {
-        val channel = stringSerializer.deserialize(message.channel) ?: return
+        val channel = serializer.deserialize(message.channel) ?: return
         if (!channel.endsWith(NOTIFY_SUFFIX)) {
             return
         }
@@ -75,7 +74,7 @@ class LockNotificationManager(
 
         val entry = registry[key] ?: return
         entry.semaphore.release()
-        log.info("락 해제 알림 수신: key={}, 남은 대기자={}", key, entry?.refCount ?: 0)
+        log.info("락 해제 알림 수신: key={}, 남은 대기자={}", key, entry?.counter ?: 0)
     }
 
     companion object {

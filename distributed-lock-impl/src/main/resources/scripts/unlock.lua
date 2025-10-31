@@ -7,7 +7,6 @@ local lockKey = KEYS[1]
 local lockOwnerId = ARGV[1]
 
 local ownerExists = redis.call('hexists', lockKey, lockOwnerId)
-
 if ownerExists == 0 then
   return -1
 end
@@ -15,7 +14,8 @@ end
 local counter = redis.call('hincrby', lockKey, lockOwnerId, -1)
 if counter > 0 then
   return 0
-else
-  redis.call('del', lockKey)
-  return 1
 end
+
+redis.call('del', lockKey)
+
+return 1
