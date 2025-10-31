@@ -21,7 +21,7 @@ class LockNotificationManager(
     private val registry = ConcurrentHashMap<String, LockWaitEntry>()
 
     private data class LockWaitEntry(
-        val semaphore: Semaphore,
+        val semaphore: Semaphore = Semaphore(0),
         val counter: AtomicInteger = AtomicInteger(1),
     )
 
@@ -31,7 +31,7 @@ class LockNotificationManager(
             if (existing == null) {
                 log.info("새로운 LockWaitEntry 생성 및 구독: key={}", key)
                 created = true
-                LockWaitEntry(Semaphore(0))
+                LockWaitEntry()
             } else {
                 existing.counter.incrementAndGet()
                 log.info("기존 LockWaitEntry 재사용: key={}, refCount={}", key, existing.counter.get())
