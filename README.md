@@ -21,7 +21,8 @@
 - [relation-delete](./relation-delete/README.md): 연관관계에서 자식들을 삭제하는 여러 방법들을 알아보자
 - [pagination](./pagination/README.md): 페이지네이션의 문제 상황들과 해결 방법을 알아보자
 - [json-sub-type](./json-sub-type/README.md): SubType을 JSON으로 직렬화, 역직렬화하는 방법을 알아보자
-- [spring-security-impl](./spring-security-impl/README.md): Spring Security를 직접 구현해보자
+- [spring-security-impl](./spring-security-impl/README.md): Spring Security를 직접 구현하면서 이해해보자!
 - [annotation](./anno/README.md): Spring AOP Annotation에 대해서 알아보자
 - [refresh-token-rotation](./refresh-token-rotation/README.md): Refresh Token Rotation에 대해서 알아보자
-- [distributed-lock-impl](./distributed-lock-impl/README.md): Spin Lock과 Pub/Sub 방식을 구현하는 방식을 알아보자
+- [distributed-lock-impl](./distributed-lock-impl/README.md): Redisson Spin Lock과 Pub/Sub을 직접 구현하면서 이해해보자!
+- [resilience4j-circuitbreaker](./resilience4j-circuitbreaker/README.md): Resilience4j CircuitBreaker를 직접 구현하면서 이해해보자!

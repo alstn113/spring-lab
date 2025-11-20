@@ -1,0 +1,11 @@
+resilience4j:
+  circuitbreaker:
+    instances:
+      myCircuitBreaker:
+        failureRateThreshold: 50
+        permittedNumberOfCallsInHalfOpenState: 5
+        waitDurationInOpenState: 5000 # 5s
+        slidingWindow:
+          type: COUNT_BASED
+          size: 10
+          minimumNumberOfCalls: 5
