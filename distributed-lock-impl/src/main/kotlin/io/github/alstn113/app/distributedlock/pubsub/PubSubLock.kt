@@ -67,8 +67,8 @@ class PubSubLock(
             }
 
             // 락이 해제되기를 대기, 알림 시 여러 스레드 중 하나만 깨어날 수 있음
-            val timeout = minOf(ttl, deadlineMillis - System.currentTimeMillis())
-            val acquired = semaphore.tryAcquire(timeout, TimeUnit.MILLISECONDS)
+            val remainTimeMillis = deadlineMillis - System.currentTimeMillis()
+            val acquired = semaphore.tryAcquire(remainTimeMillis, TimeUnit.MILLISECONDS)
             if (!acquired) { // 타임아웃 발생
                 return false
             }

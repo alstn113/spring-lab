@@ -13,7 +13,6 @@ class BookService(
     @Cacheable("books", key = "#id")
     @Transactional(readOnly = true)
     fun getBook(id: Long): BookDto {
-        ThreadLocal
         val book = bookRepository.findByIdOrNull(id)
             ?: throw IllegalArgumentException()
 
